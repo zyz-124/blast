@@ -1,0 +1,338 @@
+[
+  {
+    "id": "docker-oom-001",
+    "title": "Docker: Container OOM Killed (Exit Code 137)",
+    "title_zh": "Docker: 容器 OOM 被杀死 (退出码 137)",
+    "patterns": [
+      "exit code 137",
+      "OOMKilled",
+      "Out of memory"
+    ],
+    "solutions": [
+      {
+        "type": "config",
+        "title": "Increase memory limit",
+        "steps": [
+          "docker run --memory=512m --memory-swap=1g <image>",
+          "docker-compose: set deploy.resources.limits.memory",
+          "Check memory usage: docker stats",
+          "Fix the app: reduce memory usage, add pagination, use streaming"
+        ],
+        "title_zh": "增加内存限制",
+        "steps_zh": [
+          "docker run --memory=512m --memory-swap=1g <镜像>",
+          "docker-compose：设置 deploy.resources.limits.memory",
+          "检查 memory usage：docker stats",
+          "修复 app: reduce memory usage, add pagination, use streaming"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "增加内存限制",
+        "steps": [
+          "docker run --memory=512m --memory-swap=1g <image>",
+          "docker-compose: 设置 deploy.resources.limits.memory",
+          "查看内存使用: docker stats",
+          "修复应用: 减少内存使用、添加分页、使用流式处理"
+        ]
+      }
+    ],
+    "code_fix": "# docker-compose.yml\nservices:\n  app:\n    image: myapp\n    deploy:\n      resources:\n        limits:\n          memory: 512M",
+    "ref": "https://docs.docker.com/config/containers/resource_constraints/"
+  },
+  {
+    "id": "docker-port-001",
+    "title": "Docker: Port Already Allocated / Bind Error",
+    "title_zh": "Docker: 端口已被占用",
+    "patterns": [
+      "port is already allocated",
+      "bind: address already in use",
+      "port.*already"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Free the port or use different port",
+        "steps": [
+          "Error: bind: address already in use → port is occupied",
+          "Check what's using the port: lsof -i :8080 or netstat -ano | findstr 8080",
+          "Change the host port: docker run -p 8081:8080 <image>",
+          "Kill the existing container: docker stop <container> && docker rm <container>"
+        ],
+        "title_zh": "释放端口或使用其他端口",
+        "steps_zh": [
+          "错误：bind: address already in use → 端口被占用",
+          "检查 what's using the port：lsof -i :8080 or netstat -ano | findstr 8080",
+          "更改 the host port：docker run -p 8081:8080 <image>",
+          "终止 the existing container：docker stop <container> && docker rm <container>"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "释放端口或使用不同端口",
+        "steps": [
+          "端口被占用",
+          "查看端口占用: lsof -i :8080 或 netstat -ano | findstr 8080",
+          "更换主机端口: docker run -p 8081:8080 <image>",
+          "停止已有容器: docker stop <container> && docker rm <container>"
+        ]
+      }
+    ],
+    "code_fix": "# Check who's using port 8080\nlsof -i :8080\n# Change port mapping\ndocker run -p 8081:8080 myapp",
+    "ref": "https://docs.docker.com/engine/reference/commandline/run/#publish"
+  },
+  {
+    "id": "docker-exec-001",
+    "title": "Docker: Exec Format Error / Wrong Architecture",
+    "title_zh": "Docker: 执行格式错误 / 架构不匹配",
+    "patterns": [
+      "exec format error",
+      "exec user process caused.*exec format"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix architecture or entrypoint",
+        "steps": [
+          "The image was built for a different CPU architecture (e.g. ARM on x86)",
+          "Use --platform: docker build --platform linux/amd64 .",
+          "Check entrypoint: ensure it starts with #!/bin/sh or is a valid binary",
+          "Use multi-arch builds: docker buildx build --platform linux/amd64,linux/arm64"
+        ],
+        "title_zh": "修复架构或入口点",
+        "steps_zh": [
+          "镜像是为不同 CPU 架构构建的（如 ARM for x86）",
+          "使用 --platform：docker build --platform linux/amd64 .",
+          "检查 entrypoint：ensure it starts with #!/bin/sh or is a valid binary",
+          "使用 multi-arch builds：docker buildx build --platform linux/amd64,linux/arm64"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正架构或入口点",
+        "steps": [
+          "镜像为不同的 CPU 架构构建（如 ARM 在 x86 上运行）",
+          "使用 --platform: docker build --platform linux/amd64 .",
+          "检查 entrypoint: 确保以 #!/bin/sh 开头或为有效二进制文件",
+          "使用多架构构建: docker buildx build --platform linux/amd64,linux/arm64"
+        ]
+      }
+    ],
+    "code_fix": "# Build for specific platform\ndocker build --platform linux/amd64 -t myapp .\n# Multi-architecture build\ndocker buildx build --platform linux/amd64,linux/arm64 -t myapp .",
+    "ref": "https://docs.docker.com/build/building/multi-platform/"
+  },
+  {
+    "id": "docker-space-001",
+    "title": "Docker: No Space Left on Device",
+    "title_zh": "Docker: 磁盘空间不足",
+    "patterns": [
+      "no space left on device",
+      "No space left on device"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Clean Docker disk usage",
+        "steps": [
+          "Docker has accumulated too much build cache, images, and volumes",
+          "docker system prune -a (removes all unused images, containers, networks)",
+          "docker builder prune (removes build cache)",
+          "docker volume prune (removes unused volumes)",
+          "Check: docker system df to see space usage"
+        ],
+        "title_zh": "清理 Docker 磁盘占用",
+        "steps_zh": [
+          "Docker 积累了过多的构建缓存、镜像和卷",
+          "docker system prune -a（删除所有未使用的镜像、容器、网络）",
+          "docker builder prune（删除构建缓存）",
+          "docker volume prune（删除未使用的卷）",
+          "检查：docker system df 查看空间使用情况"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "清理 Docker 磁盘使用",
+        "steps": [
+          "Docker 积累了太多构建缓存、镜像和卷",
+          "docker system prune -a (删除所有未使用的镜像、容器、网络)",
+          "docker builder prune (删除构建缓存)",
+          "docker volume prune (删除未使用的卷)",
+          "检查: docker system df 查看空间使用"
+        ]
+      }
+    ],
+    "code_fix": "# Check disk usage\ndocker system df\n# Clean everything unused\ndocker system prune -a --volumes",
+    "ref": "https://docs.docker.com/config/pruning/"
+  },
+  {
+    "id": "docker-restart-001",
+    "title": "Docker: Container Keeps Restarting",
+    "title_zh": "Docker: 容器不断重启",
+    "patterns": [
+      "restarting",
+      "Restarting \\(\\d+\\)",
+      "container.*restart"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Check container logs and config",
+        "steps": [
+          "The container starts, crashes, and restarts in a loop",
+          "Check logs: docker logs --tail 50 <container>",
+          "Common cause: app crashes on startup, missing env vars, or DB not ready",
+          "Fix: check docker-compose depends_on with healthcheck, or add restart delay"
+        ],
+        "title_zh": "检查容器日志和配置",
+        "steps_zh": [
+          "容器启动、崩溃、重启循环",
+          "检查 logs：docker logs --tail 50 <container>",
+          "常见 cause：app crashes on startup, missing env vars, or DB not ready",
+          "修复：check docker-compose depends_on with healthcheck, or add restart delay"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "查看容器日志和配置",
+        "steps": [
+          "容器启动、崩溃、再重启，不断循环",
+          "查看日志: docker logs --tail 50 <container>",
+          "常见原因: 应用启动时崩溃、缺少环境变量或数据库未就绪",
+          "修正: docker-compose depends_on 加 healthcheck，或添加重启延迟"
+        ]
+      }
+    ],
+    "code_fix": "# Check what's happening\ndocker logs myapp --tail 100\n# docker-compose with health check\n# depends_on:\n#   db:\n#     condition: service_healthy",
+    "ref": "https://docs.docker.com/config/containers/start-containers-automatically/"
+  },
+  {
+    "id": "docker-build-001",
+    "title": "Docker: Build Failed / COPY not found",
+    "title_zh": "Docker: 构建失败 / COPY 未找到文件",
+    "patterns": [
+      "COPY failed: file not found",
+      "COPY failed: stat.*no such file"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix COPY path or .dockerignore",
+        "steps": [
+          "COPY failed: the source file doesn't exist relative to the build context (.)",
+          "Check .dockerignore — the file might be excluded",
+          "Paths are relative to the Dockerfile directory, not your current directory",
+          "Use absolute paths from the build context: COPY ./src/app.js /app/"
+        ],
+        "title_zh": "修复 COPY 路径或 .dockerignore",
+        "steps_zh": [
+          "COPY 失败：源文件相对于构建上下文（.）不存在",
+          "检查 .dockerignore — the file might be excluded",
+          "路径相对于 Dockerfile 所在目录，而非当前工作目录",
+          "使用 absolute paths from the build context：COPY ./src/app.js /app/"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正 COPY 路径或 .dockerignore",
+        "steps": [
+          "COPY 失败: 源文件相对于构建上下文 (.) 不存在",
+          "检查 .dockerignore——文件可能被排除了",
+          "路径相对于 Dockerfile 所在目录，而非当前目录",
+          "使用构建上下文的绝对路径: COPY ./src/app.js /app/"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Wrong: file relative to wrong directory\nCOPY ../config.json /app/\n\n# ✅ Correct\nCOPY ./config.json /app/",
+    "ref": "https://docs.docker.com/engine/reference/builder/#copy"
+  },
+  {
+    "id": "docker-net-001",
+    "title": "Docker: Network / DNS Resolution Failure",
+    "title_zh": "Docker: 网络 / DNS 解析失败",
+    "patterns": [
+      "could not resolve host",
+      "Name or service not known",
+      "getaddrinfo.*Temporary failure"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Fix Docker networking",
+        "steps": [
+          "Containers can't resolve each other's hostnames",
+          "In docker-compose: services can reach each other by service name",
+          "Without compose: create a user-defined network (docker network create mynet)",
+          "DNS issues: check /etc/resolv.conf in the container, or set --dns flag"
+        ],
+        "title_zh": "修复 Docker 网络",
+        "steps_zh": [
+          "容器无法解析彼此的主机名",
+          "在 docker-compose 中：服务之间可通过服务名互通",
+          "没有 compose：创建用户定义网络（docker network create mynet）",
+          "DNS 问题：检查容器的 /etc/resolv.conf，或设置 --dns 标志"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修复 Docker 网络",
+        "steps": [
+          "容器间无法解析彼此的主机名",
+          "在 docker-compose 中: 服务可以通过 service name 互相访问",
+          "非 compose: 创建自定义网络 (docker network create mynet)",
+          "DNS 问题: 检查容器内 /etc/resolv.conf，或设置 --dns 标志"
+        ]
+      }
+    ],
+    "code_fix": "# Create a custom network\ndocker network create mynet\ndocker run --network mynet -d --name db postgres\ndocker run --network mynet -d --name app myapp  # Can connect to 'db' by hostname",
+    "ref": "https://docs.docker.com/network/"
+  },
+  {
+    "id": "docker-vol-001",
+    "title": "Docker: Volume Permission Denied",
+    "title_zh": "Docker: 卷权限被拒绝",
+    "patterns": [
+      "Permission denied.*volume",
+      "can't access.*volume",
+      "read-only file system"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Fix volume permissions",
+        "steps": [
+          "The container user doesn't have permission to read/write the mounted volume",
+          "Check the UID/GID mismatch: the container runs as a different user than the host",
+          "docker run -u $(id -u):$(id -g) ... to match host user",
+          "Or chmod 777 /path (less secure) or chown to match container userID"
+        ],
+        "title_zh": "修复卷权限",
+        "steps_zh": [
+          "容器用户没有读写挂载卷的权限",
+          "检查 the UID/GID mismatch：the container runs as a different user than the host",
+          "docker run -u $(id -u):$(id -g) ... 匹配宿主机用户",
+          "或 chmod 777 /path (less secure) or chown to match container userID"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正卷权限",
+        "steps": [
+          "容器用户无权读写挂载的卷",
+          "UID/GID 不匹配: 容器以不同于主机的用户运行",
+          "docker run -u $(id -u):$(id -g) ... 匹配主机用户",
+          "或 chmod 777 /path（较不安全）或 chown 匹配容器用户 ID"
+        ]
+      }
+    ],
+    "code_fix": "# Run container as current user\n docker run -u $(id -u):$(id -g) -v ./data:/data myapp\n# Or set user in Dockerfile\n# USER 1000:1000",
+    "ref": "https://docs.docker.com/storage/volumes/"
+  }
+]

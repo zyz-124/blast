@@ -1,0 +1,487 @@
+[
+  {
+    "id": "common-perm-001",
+    "title": "Permission denied / EACCES",
+    "patterns": [
+      "Permission denied",
+      "EACCES: permission denied",
+      "EPERM: operation not permitted"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix file permissions (Linux/macOS)",
+        "steps": [
+          "chmod +x script.sh  — add execute permission",
+          "sudo command     — run with elevated privileges if needed",
+          "chown user:group file  — change ownership"
+        ],
+        "title_zh": "修复文件权限（Linux/macOS）",
+        "steps_zh": [
+          "chmod +x script.sh ——添加执行权限",
+          "sudo command ——必要时以提升的权限运行",
+          "chown user:group 文件 ——更改所有者"
+        ]
+      },
+      {
+        "type": "fix",
+        "title": "Fix file permissions (Windows)",
+        "steps": [
+          "Run terminal as Administrator",
+          "Check if file is locked by another process (Task Manager → Details)",
+          "Check antivirus/quarantine blocking the execution"
+        ],
+        "title_zh": "修复文件权限（Windows）",
+        "steps_zh": [
+          "以管理员身份运行终端",
+          "检查是否 file is locked by another process (Task Manager → Details)",
+          "检查杀毒软件/隔离区是否阻止了执行"
+        ]
+      }
+    ],
+    "title_zh": "权限拒绝 / EACCES",
+    "solutions_zh": [
+      {
+        "title": "修正文件权限 (Linux/macOS)",
+        "steps": [
+          "chmod +x script.sh ——添加执行权限",
+          "sudo command ——必要时以提升的权限运行",
+          "chown user:group file ——更改所有者"
+        ]
+      },
+      {
+        "title": "修正文件权限 (Windows)",
+        "steps": [
+          "以管理员身份运行终端",
+          "检查文件是否被其他进程锁定（任务管理器 → 详细信息）",
+          "检查杀毒软件/隔离区是否阻止了执行"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "common-oom-001",
+    "title": "OutOfMemoryError / OOM killed / heap out of memory",
+    "patterns": [
+      "java\\.lang\\.OutOfMemoryError",
+      "heap out of memory",
+      "OOM killer",
+      "JavaScript heap out of memory",
+      "FATAL ERROR: Reached heap limit",
+      "Cannot allocate memory"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Increase memory limit",
+        "steps": [
+          "Node.js: NODE_OPTIONS='--max-old-space-size=4096' node app.js (4GB)",
+          "Java: -Xmx4g flag to set max heap to 4GB",
+          "Python: usually means infinite recursion or massive data structure — fix the code"
+        ],
+        "title_zh": "增加内存限制",
+        "steps_zh": [
+          "Node.js：NODE_OPTIONS='--max-old-space-size=4096' node app.js（4GB）",
+          "Java：-Xmx4g 标志设置最大堆内存为 4GB",
+          "Python：通常意味着无限递归或数据结构过大——修复代码"
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Find the memory leak",
+        "steps": [
+          "Are you storing data in a list/dict that grows unboundedly?",
+          "Infinite loop appending to a collection?",
+          "Use profiler: node --inspect, Java VisualVM, Python memory_profiler"
+        ],
+        "title_zh": "查找内存泄漏",
+        "steps_zh": [
+          "是否在不断向列表/字典中无限制地添加数据？",
+          "是否无限循环向集合追加数据？",
+          "使用 profiler：node --inspect, Java VisualVM, Python memory_profiler"
+        ]
+      }
+    ],
+    "title_zh": "内存溢出 / OOM 被杀死 / 堆内存不足",
+    "solutions_zh": [
+      {
+        "title": "增加内存限制",
+        "steps": [
+          "Node.js: NODE_OPTIONS='--max-old-space-size=4096' node app.js (4GB)",
+          "Java: -Xmx4g 设置最大堆为 4GB",
+          "Python: 通常意味着无限递归或巨大数据结构——修复代码"
+        ]
+      },
+      {
+        "title": "查找内存泄漏",
+        "steps": [
+          "你是否在列表/字典中无限增长地存储数据？",
+          "无限循环向集合中追加数据？",
+          "使用分析器: node --inspect、Java VisualVM、Python memory_profiler"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "common-timeout-001",
+    "title": "Connection timeout / ETIMEDOUT / request aborted",
+    "patterns": [
+      "ETIMEDOUT",
+      "connection timed out",
+      "socket hang up",
+      "request aborted",
+      "ESOCKETTIMEDOUT",
+      "network is unreachable"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Check network and target",
+        "steps": [
+          "Target server is not responding — is it up? Try curl/ping first",
+          "DNS issue? Check /etc/hosts or nslookup for the hostname",
+          "Firewall blocking the port? Check iptables/Windows Firewall settings"
+        ],
+        "title_zh": "检查网络和目标",
+        "steps_zh": [
+          "目标服务器无响应——它在运行吗？先尝试 curl/ping",
+          "DNS 问题？检查 /etc/hosts 或用 nslookup 查主机名",
+          "防火墙阻止了端口？检查 iptables/Windows 防火墙设置"
+        ]
+      },
+      {
+        "type": "fix",
+        "title": "Increase timeout or retry",
+        "steps": [
+          "Increase connection timeout in your HTTP client config",
+          "Implement retry logic with exponential backoff",
+          "For API calls: check rate limits — you may be throttled"
+        ],
+        "title_zh": "增加超时或重试",
+        "steps_zh": [
+          "增加 connection timeout in your HTTP client config",
+          "实现带指数退避的重试逻辑",
+          "对于 API 调用：检查速率限制——你可能被限流了"
+        ]
+      }
+    ],
+    "title_zh": "连接超时 / ETIMEDOUT / 请求被中止",
+    "solutions_zh": [
+      {
+        "title": "检查网络和目标",
+        "steps": [
+          "目标服务器没有响应——它是否在运行？先用 curl/ping 测试",
+          "DNS 问题？检查 /etc/hosts 或 nslookup 域名",
+          "防火墙阻塞端口？检查 iptables/Windows 防火墙规则"
+        ]
+      },
+      {
+        "title": "增加超时或添加重试",
+        "steps": [
+          "在 HTTP 客户端配置中增加连接超时",
+          "实现带指数退避的重试逻辑",
+          "API 调用: 检查速率限制——你可能被限流了"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "common-git-conflict-001",
+    "title": "Git: Merge Conflict",
+    "title_zh": "Git: 合并冲突",
+    "patterns": [
+      "CONFLICT \\(content\\): Merge conflict in",
+      "Automatic merge failed"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Resolve git merge conflicts",
+        "steps": [
+          "Manually edit the conflicting files — look for <<<<<<<, =======, >>>>>>> markers",
+          "Choose which changes to keep, remove the markers, save the file",
+          "git add <resolved-file> to mark as resolved",
+          "git merge --continue or git commit to finish",
+          "Use tools: VS Code merge editor, git mergetool, or GitHub's conflict resolver"
+        ],
+        "title_zh": "解决 git 合并冲突",
+        "steps_zh": [
+          "手动编辑冲突文件——查找 <<<<<<<, =======, >>>>>>> 标记",
+          "选择 which changes to keep, remove the markers, save the file",
+          "git add <已解决的文件> 标记为已解决",
+          "git merge --continue 或 git commit 完成",
+          "使用 tools：VS Code merge editor, git mergetool, or GitHub's conflict resolver"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "解决 Git 合并冲突",
+        "steps": [
+          "手动编辑冲突文件——查找 <<<<<<<, =======, >>>>>>> 标记",
+          "选择保留哪些修改，移除标记，保存文件",
+          "git add <resolved-file> 标记已解决",
+          "git merge --continue 或 git commit 完成",
+          "使用工具: VS Code 合并编辑器、git mergetool 或 GitHub 冲突解决器"
+        ]
+      }
+    ],
+    "code_fix": "# Conflict markers in file:\n# <<<<<<< HEAD\n# your changes\n# =======\n# their changes\n# >>>>>>> branch-name\n\n# After resolving:\ngit add file.txt\ngit merge --continue",
+    "ref": "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/addressing-merge-conflicts"
+  },
+  {
+    "id": "common-cmd-001",
+    "title": "Shell: Command Not Found",
+    "title_zh": "Shell: 命令未找到",
+    "patterns": [
+      "command not found: (?P<cmd>\\w+)",
+      "not recognized as an internal or external command"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Install or fix PATH",
+        "steps": [
+          "The command is not installed or not in your PATH",
+          "Install it: apt-get install <cmd>, brew install <cmd>, or pip install <cmd>",
+          "Check PATH: echo $PATH (Linux/macOS) or echo %PATH% (Windows)",
+          "Maybe you need ./script.sh instead of script.sh for local scripts"
+        ],
+        "title_zh": "安装或修复 PATH",
+        "steps_zh": [
+          "命令未安装或不在 PATH 中",
+          "安装：apt-get install <命令>, brew install <命令>, 或 pip install <命令>",
+          "检查 PATH：echo $PATH (Linux/macOS) or echo %PATH% (Windows)",
+          "本地脚本可能需要 ./script.sh 而非 script.sh"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "安装或修复 PATH",
+        "steps": [
+          "命令未安装或不在 PATH 中",
+          "安装: apt-get install <cmd>, brew install <cmd>, 或 pip install <cmd>",
+          "检查 PATH: echo $PATH (Linux/macOS) 或 echo %PATH% (Windows)",
+          "本地脚本可能需要用 ./script.sh 而非 script.sh"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nsome-unknown-cmd\n\n# ✅ Fix\nwhich some-command   # Check if installed\napt-get install some-command  # Install if missing",
+    "ref": "https://wiki.archlinux.org/title/Environment_variables"
+  },
+  {
+    "id": "common-disk-001",
+    "title": "Disk Full / ENOSPC (No Space Left)",
+    "title_zh": "磁盘满 / 无剩余空间",
+    "patterns": [
+      "No space left on device",
+      "ENOSPC.*no space",
+      "disk full",
+      "No space left"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Free up disk space",
+        "steps": [
+          "Check space: df -h (Linux/macOS) or Get-PSDrive (Windows)",
+          "Find large dirs: du -sh /* | sort -h (Linux) or diruse",
+          "Delete old logs: /var/log/*.log, npm cache clean --force, docker system prune",
+          "Clean package managers: apt clean, brew cleanup, pip cache purge"
+        ],
+        "title_zh": "释放磁盘空间",
+        "steps_zh": [
+          "检查 space：df -h (Linux/macOS) or Get-PSDrive (Windows)",
+          "查找大目录：du -sh /* | sort -h（Linux）或 diruse",
+          "删除 old logs: /var/log/*.log, npm cache clean --force, docker system prune",
+          "清理包管理器：apt clean、brew cleanup、pip cache purge"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "释放磁盘空间",
+        "steps": [
+          "检查空间: df -h (Linux/macOS) 或 Get-PSDrive (Windows)",
+          "查找大目录: du -sh /* | sort -h (Linux) 或 diruse",
+          "删除旧日志: /var/log/*.log, npm cache clean --force, docker system prune",
+          "清理包管理器: apt clean, brew cleanup, pip cache purge"
+        ]
+      }
+    ],
+    "code_fix": "# Linux: find largest directories\ndu -sh /* 2>/dev/null | sort -h | tail -20\n# Clean docker\ndocker system prune -a --volumes",
+    "ref": "https://www.linux.com/topic/desktop/freeing-disk-space-linux/"
+  },
+  {
+    "id": "common-addr-001",
+    "title": "Address Already in Use (EADDRINUSE)",
+    "title_zh": "地址已被占用 (EADDRINUSE)",
+    "patterns": [
+      "EADDRINUSE",
+      "address already in use",
+      "Address already in use"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Free or change the port",
+        "steps": [
+          "Another process is already listening on that port",
+          "Find: lsof -i :3000 (Linux/macOS) or netstat -ano | findstr :3000 (Windows)",
+          "Kill the process: kill -9 <PID> (Linux) or taskkill /F /PID <PID> (Windows)",
+          "Or change port: usually via --port or PORT env var"
+        ],
+        "title_zh": "释放或更换端口",
+        "steps_zh": [
+          "另一进程已在监听该端口",
+          "查找：lsof -i :3000 (Linux/macOS) or netstat -ano | findstr :3000 (Windows)",
+          "终止 the process：kill -9 <PID> (Linux) or taskkill /F /PID <PID> (Windows)",
+          "或 change port: usually via --port or PORT env var"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "释放或更换端口",
+        "steps": [
+          "另一个进程已在监听该端口",
+          "查找: lsof -i :3000 (Linux/macOS) 或 netstat -ano | findstr :3000 (Windows)",
+          "杀死进程: kill -9 <PID> (Linux) 或 taskkill /F /PID <PID> (Windows)",
+          "或更换端口: 通常通过 --port 或 PORT 环境变量"
+        ]
+      }
+    ],
+    "code_fix": "# Linux: find and kill process on port 3000\nlsof -ti :3000 | xargs kill -9\n\n# Or change port\nPORT=3001 node server.js",
+    "ref": "https://nodejs.org/api/errors.html#errors_eaddrinuse"
+  },
+  {
+    "id": "common-ssl-001",
+    "title": "SSL/TLS Certificate Error",
+    "title_zh": "SSL/TLS 证书错误",
+    "patterns": [
+      "certificate has expired",
+      "self.signed certificate",
+      "SSL certificate problem",
+      "CERTIFICATE_VERIFY_FAILED"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Check certificate validity",
+        "steps": [
+          "The SSL certificate is expired, self-signed, or misconfigured",
+          "Check: curl -vI https://example.com (look for 'expire')",
+          "Dev: set NODE_TLS_REJECT_UNAUTHORIZED=0 (temporary, not for production)",
+          "Python: requests.get(url, verify=False) or verify='/path/to/cert.pem'",
+          "Production: renew with Let's Encrypt or fix CA chain"
+        ],
+        "title_zh": "检查证书有效性",
+        "steps_zh": [
+          "SSL 证书已过期、自签名或配置错误",
+          "检查：curl -vI https://example.com（查找 'expire'）",
+          "开发环境：设置 NODE_TLS_REJECT_UNAUTHORIZED=0（临时，不要用于生产）",
+          "Python：requests.get(url, verify=False) 或 verify='/path/to/cert.pem'",
+          "生产环境：用 Let's Encrypt 续期或修复 CA 链"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "检查证书有效性",
+        "steps": [
+          "SSL 证书已过期、自签名或配置有误",
+          "检查: curl -vI https://example.com (查看 'expire')",
+          "开发: 设置 NODE_TLS_REJECT_UNAUTHORIZED=0 (临时，勿用于生产)",
+          "Python: requests.get(url, verify=False) 或 verify='/path/to/cert.pem'",
+          "生产: 用 Let's Encrypt 续期或修复 CA 链"
+        ]
+      }
+    ],
+    "code_fix": "# Check cert expiry\nopenssl s_client -connect example.com:443 -servername example.com </dev/null 2>/dev/null | openssl x509 -noout -dates",
+    "ref": "https://letsencrypt.org/docs/faq/"
+  },
+  {
+    "id": "common-env-001",
+    "title": "Environment Variable Not Set",
+    "title_zh": "环境变量未设置",
+    "patterns": [
+      "environment variable not set",
+      "Env var not found",
+      "os\\.environ\\["
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Set the missing environment variable",
+        "steps": [
+          "Export the variable: export API_KEY=xxx (Linux/macOS) or set API_KEY=xxx (Windows)",
+          "Use a .env file with python-dotenv or dotenv for Node.js",
+          "Check for typos in variable name",
+          "Use os.getenv('KEY', 'default') instead of os.environ['KEY'] to avoid KeyError"
+        ],
+        "title_zh": "设置缺失的环境变量",
+        "steps_zh": [
+          "导出变量：export API_KEY=xxx（Linux/macOS）或 set API_KEY=xxx（Windows）",
+          "对 Node.js 使用 a .env file with python-dotenv or dotenv",
+          "检查变量名是否有拼写错误",
+          "使用 os.getenv('KEY', 'default') 代替 os.environ['KEY'] to avoid KeyError"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "设置缺失的环境变量",
+        "steps": [
+          "设置变量: export API_KEY=xxx (Linux/macOS) 或 set API_KEY=xxx (Windows)",
+          "使用 python-dotenv 或 Node.js dotenv 加载 .env 文件",
+          "检查变量名拼写",
+          "用 os.getenv('KEY', 'default') 代替 os.environ['KEY'] 避免 KeyError"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nimport os\nkey = os.environ['API_KEY']  # KeyError if not set\n\n# ✅ Fix\nkey = os.getenv('API_KEY', 'dev-key-12345')  # fallback value",
+    "ref": "https://12factor.net/config"
+  },
+  {
+    "id": "common-matplotlib-001",
+    "title": "Matplotlib: Backend / GUI Error",
+    "title_zh": "Matplotlib: 后端 / GUI 错误",
+    "patterns": [
+      "UserWarning: Matplotlib is currently using agg",
+      "TclError.*no display name"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Set correct backend",
+        "steps": [
+          "Agg backend is for file-only rendering (no GUI)",
+          "Install a GUI backend: pip install pyqt5, then: matplotlib.use('Qt5Agg')",
+          "In Jupyter: %matplotlib inline",
+          "In a script with no display: use plt.savefig('plot.png') instead of plt.show()"
+        ],
+        "title_zh": "设置正确的后端",
+        "steps_zh": [
+          "Agg 后端仅用于文件渲染（无 GUI）",
+          "安装 GUI 后端：pip install pyqt5，然后：matplotlib.use('Qt5Agg')",
+          "在 Jupyter 中：%matplotlib inline",
+          "在无显示器的脚本中：使用 plt.savefig('plot.png') 代替 plt.show()"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "设置正确的后端",
+        "steps": [
+          "Agg 后端仅用于文件渲染（无 GUI）",
+          "安装 GUI 后端: pip install pyqt5，然后 matplotlib.use('Qt5Agg')",
+          "Jupyter 中: %matplotlib inline",
+          "无显示器的服务器脚本: 用 plt.savefig('plot.png') 代替 plt.show()"
+        ]
+      }
+    ],
+    "code_fix": "# For headless/server use\nimport matplotlib\nmatplotlib.use('Agg')  # Non-GUI backend\nimport matplotlib.pyplot as plt\nplt.plot([1,2,3])\nplt.savefig('output.png')  # Save instead of show",
+    "ref": "https://matplotlib.org/stable/users/explain/backends.html"
+  }
+]

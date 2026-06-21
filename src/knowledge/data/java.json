@@ -1,0 +1,174 @@
+[
+  {
+    "id": "java-npe-001",
+    "title": "NullPointerException (NPE)",
+    "patterns": [
+      "NullPointerException",
+      "java\\.lang\\.NullPointerException"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Add null check or use Optional",
+        "steps": [
+          "A variable is null when calling a method or accessing a field on it",
+          "Before access: if (obj != null) { ... }",
+          "Use Optional: Optional.ofNullable(obj).map(o -> o.getField()).orElse(defaultValue)"
+        ],
+        "title_zh": "添加空值检查或使用 Optional",
+        "steps_zh": [
+          "对 null 变量调用了方法或访问了字段",
+          "在进行 access 之前：if (obj != null) { ... }",
+          "使用 Optional：Optional.ofNullable(obj).map(o -> o.getField()).orElse(defaultValue)"
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Find the null source",
+        "steps": [
+          "Check the stack trace line number - that is where NPE occurred",
+          "Common causes: method returned null, uninitialized field, Map.get() on missing key"
+        ],
+        "title_zh": "查找 null 来源",
+        "steps_zh": [
+          "检查 stack trace line number - that is where NPE occurred",
+          "常见 causes：method returned null, uninitialized field, Map.get() on missing key"
+        ]
+      }
+    ],
+    "ref": "https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html",
+    "title_zh": "空指针异常 (NullPointerException)",
+    "solutions_zh": [
+      {
+        "title": "添加空值检查或使用 Optional",
+        "steps": [
+          "某个变量为 null，你试图调用其方法或访问其字段",
+          "访问前: if (obj != null) { ... }",
+          "使用 Optional: Optional.ofNullable(obj).map(o -> o.getField()).orElse(defaultValue)"
+        ]
+      },
+      {
+        "title": "找到空值来源",
+        "steps": [
+          "查看堆栈跟踪中的行号——NPE 发生的位置",
+          "常见原因: 方法返回了 null、字段未初始化、Map.get() 在找不到键时"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "java-class-001",
+    "title": "ClassNotFoundException / NoClassDefFoundError",
+    "patterns": [
+      "ClassNotFoundException: (.+?)$",
+      "NoClassDefFoundError: (.+?)$"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix classpath issue",
+        "steps": [
+          "Class not found in classpath - JVM cannot locate it",
+          "Check: Is the JAR or dependency in your classpath?",
+          "Maven: mvn clean install to rebuild and resolve dependencies",
+          "Gradle: ./gradlew build to refresh dependencies"
+        ],
+        "title_zh": "修复 classpath 问题",
+        "steps_zh": [
+          "classpath 中未找到类——JVM 无法定位",
+          "检查：JAR 或依赖是否在 classpath 中？",
+          "Maven：mvn clean install 重新构建并解决依赖",
+          "Gradle：./gradlew build 刷新依赖"
+        ]
+      }
+    ],
+    "title_zh": "类未找到 / 类定义未找到",
+    "solutions_zh": [
+      {
+        "title": "修正类路径问题",
+        "steps": [
+          "JVM 找不到类——检查它是否在你的 classpath 中",
+          "检查: JAR 或依赖是否在 classpath 中？",
+          "Maven: mvn clean install 重新构建并解析依赖",
+          "Gradle: ./gradlew build 刷新依赖"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "java-cast-001",
+    "title": "ClassCastException",
+    "patterns": [
+      "class (.+?) cannot be cast to class (.+?)$",
+      "ClassCastException"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix type casting",
+        "steps": [
+          "You are casting incompatible types - check actual type with obj.getClass()",
+          "Use instanceof check before casting: if (obj instanceof TargetType t)",
+          "For generics with erasure: casts may fail at runtime due to type erasure"
+        ],
+        "title_zh": "修复类型转换",
+        "steps_zh": [
+          "你在转换不兼容的类型——用 obj.getClass() 检查实际类型",
+          "使用 instanceof check before casting：if (obj instanceof TargetType t)",
+          "对于类型擦除的泛型：由于类型擦除，转换可能在运行时失败"
+        ]
+      }
+    ],
+    "title_zh": "类型转换异常 (ClassCastException)",
+    "solutions_zh": [
+      {
+        "title": "修正类型转换",
+        "steps": [
+          "你将不兼容的类型进行了强制转换——用 obj.getClass() 检查实际类型",
+          "转换前使用 instanceof 检查: if (obj instanceof TargetType t)",
+          "泛型擦除: 由于类型擦除，运行时转换可能失败"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "java-io-001",
+    "title": "FileNotFoundException / IOException",
+    "patterns": [
+      "FileNotFoundException: (.+?)$",
+      "IOException: (.+?)$",
+      "java\\.io\\.(FileNotFound|IO)Exception"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix file I/O error",
+        "steps": [
+          "File does not exist or cannot be accessed",
+          "Check file path - use absolute paths or Paths.get() for reliability",
+          "Check permissions: does the program have read/write access?",
+          "Ensure parent directory exists before creating files: Files.createDirectories(parentDir)"
+        ],
+        "title_zh": "修复文件 I/O 错误",
+        "steps_zh": [
+          "文件不存在或无法访问",
+          "检查 file path - use absolute paths or Paths.get() 是否有 reliability",
+          "检查 permissions：does the program have read/write access?",
+          "确保 parent directory exists before creating files: Files.createDirectories(parentDir)"
+        ]
+      }
+    ],
+    "title_zh": "文件未找到 / IO 异常",
+    "solutions_zh": [
+      {
+        "title": "修正文件 I/O 错误",
+        "steps": [
+          "文件不存在或无法访问",
+          "检查文件路径——使用绝对路径或 Paths.get() 以确保可靠",
+          "检查权限: 程序是否有读写权限？",
+          "创建文件前确保父目录存在: Files.createDirectories(parentDir)"
+        ]
+      }
+    ]
+  }
+]

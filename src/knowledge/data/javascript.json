@@ -1,0 +1,659 @@
+[
+  {
+    "id": "js-type-001",
+    "title": "Cannot read property of undefined/null",
+    "patterns": [
+      "Cannot read property '([^']+)' of (undefined|null)",
+      "Cannot read properties of (undefined|null) \\(reading '([^']+)'\\)"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Add null/undefined check",
+        "steps": [
+          "Use optional chaining: obj?.{prop} instead of obj.{prop}",
+          "Use nullish coalesling: obj ?? fallbackValue",
+          "Add guard clause: if (!obj) return; before accessing"
+        ],
+        "title_zh": "添加 null/undefined 检查",
+        "steps_zh": [
+          "使用 optional chaining: obj?.{prop} 代替 obj.{prop}",
+          "使用 nullish coalesling：obj ?? fallbackValue",
+          "添加 guard clause: if (!obj) return; before accessing"
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Find the root cause",
+        "steps": [
+          "Check which function/object should have returned a value but returned undefined",
+          "Look at the line number in the stack trace — that's where the null originated",
+          "Common: array method (find, map) returned undefined, or destructuring mismatch"
+        ],
+        "title_zh": "查找根本原因",
+        "steps_zh": [
+          "检查哪个函数/对象应该返回值但返回了 undefined",
+          "查看堆栈跟踪中的行号——那是 null 的来源",
+          "常见原因：数组方法（find、map）返回 undefined，或解构不匹配"
+        ]
+      }
+    ],
+    "ref": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining",
+    "title_zh": "无法读取 undefined/null 的属性",
+    "solutions_zh": [
+      {
+        "title": "添加空值检查",
+        "steps": [
+          "使用可选链: obj?.{prop} 替代 obj.{prop}",
+          "使用空值合并: obj ?? fallbackValue",
+          "添加保护语句: if (!obj) return;"
+        ]
+      },
+      {
+        "title": "找到根本原因",
+        "steps": [
+          "检查哪个函数/对象应该返回值却返回了 undefined",
+          "查看堆栈跟踪中的行号——那才是空值来源",
+          "常见: 数组方法(find、map)返回了 undefined，或解构不匹配"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-type-002",
+    "title": "TypeError: X is not a function",
+    "patterns": [
+      "TypeError: (.+?) is not a function"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix function call",
+        "steps": [
+          "You're trying to call something that isn't a function — check what {target} actually is",
+          "console.log(typeof {target}) to verify it's 'function'",
+          "Common causes: property name typo, calling on wrong object, importing incorrectly"
+        ],
+        "title_zh": "修复函数调用",
+        "steps_zh": [
+          "你试图调用不是函数的东西——检查 {target} 实际是什么",
+          "console.log(typeof {target}) 验证它是 'function'",
+          "常见原因：属性名拼写错误、在错误对象上调用、导入方式错误"
+        ]
+      }
+    ],
+    "title_zh": "类型错误：X 不是一个函数",
+    "solutions_zh": [
+      {
+        "title": "修正函数调用",
+        "steps": [
+          "你试图调用一个不是函数的东西——检查 {target} 实际是什么类型",
+          "console.log(typeof {target}) 验证其类型",
+          "常见原因: 属性名拼写错误、在错误的对象上调用、导入方式错误"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-syntax-001",
+    "title": "SyntaxError: Unexpected token",
+    "patterns": [
+      "SyntaxError: Unexpected token '([^']+)'",
+      "Unexpected token (\\S+)"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix syntax error",
+        "steps": [
+          "Missing operator, semicolon, bracket, or comma near the indicated token",
+          "Common: trailing comma in object literal (okay now but not in older Node)",
+          "Template literal issue: check for unescaped backticks or ${} inside strings"
+        ],
+        "title_zh": "修复语法错误",
+        "steps_zh": [
+          "在指示的标记附近缺少运算符、分号、括号或逗号",
+          "常见：对象字面量末尾逗号（新版本可以，旧版本 Node 不行）",
+          "模板字面量问题：检查字符串中未转义的反引号或 ${}"
+        ]
+      }
+    ],
+    "title_zh": "语法错误：意外的标记",
+    "solutions_zh": [
+      {
+        "title": "修正语法错误",
+        "steps": [
+          "在指示的标记附近缺少运算符、分号、括号或逗号",
+          "常见: 对象字面量末尾多余的逗号",
+          "模板字面量问题: 检查 strings 中的未转义反引号或 ${}"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-ref-001",
+    "title": "ReferenceError: X is not defined",
+    "patterns": [
+      "ReferenceError: (.+?) is not defined"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Define the variable or fix scope",
+        "steps": [
+          "Variable '{name}' was used without being declared (let/const/var)",
+          "If it's imported: check the import statement and module path",
+          "Using before declaration? Use const/let (not hoisted like var), or move declaration up"
+        ],
+        "title_zh": "定义变量或修复作用域",
+        "steps_zh": [
+          "变量 '{name}' 在使用前未声明（let/const/var）",
+          "如果是导入的：检查导入语句和模块路径",
+          "声明前使用？使用 const/let（不会像 var 那样提升），或将声明上移"
+        ]
+      }
+    ],
+    "title_zh": "引用错误：X 未定义",
+    "solutions_zh": [
+      {
+        "title": "定义变量或修正作用域",
+        "steps": [
+          "变量 '{name}' 在使用前未被声明 (let/const/var)",
+          "如果是导入的: 检查 import 语句和模块路径",
+          "在声明前使用？使用 const/let 替代 var，或将声明移到前面"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-promise-001",
+    "title": "TypeError: Cannot set properties of undefined",
+    "patterns": [
+      "Cannot set properties of (undefined|null) \\(setting '([^']+)'\\)",
+      "Cannot set property '([^']+)' of (undefined|null)"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix assignment target",
+        "steps": [
+          "You're assigning to a property of something that's null/undefined",
+          "Chain from an earlier operation that may have failed: result?.data?.value = x",
+          "Initialize the object before setting properties"
+        ],
+        "title_zh": "修复赋值目标",
+        "steps_zh": [
+          "你试图给 null/undefined 的属性赋值",
+          "从可能失败的前序操作链式访问：result?.data?.value = x",
+          "设置属性前先初始化对象"
+        ]
+      }
+    ],
+    "title_zh": "类型错误：无法设置 undefined 的属性",
+    "solutions_zh": [
+      {
+        "title": "修正赋值目标",
+        "steps": [
+          "你在给 null/undefined 设置属性",
+          "前面的操作可能失败了: result?.data?.value = x",
+          "在设置属性之前先初始化对象"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-json-001",
+    "title": "SyntaxError: Unexpected token in JSON",
+    "patterns": [
+      "SyntaxError: Unexpected token .+ in JSON at position (\\d+)",
+      "JSON\\.parse: unexpected character",
+      "Unexpected token .+? at position \\d+"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix JSON parsing",
+        "steps": [
+          "The JSON string is malformed — common issues:",
+          "- Keys must be double-quoted: {\"key\": value} not {'key': value}",
+          "- No trailing commas, no comments (// or /* */)",
+          "- No single quotes around strings",
+          "Try: JSON.stringify(obj) to see valid format, or use a JSON validator"
+        ],
+        "title_zh": "修复 JSON 解析",
+        "steps_zh": [
+          "JSON 字符串格式错误——常见问题：",
+          "- 键必须双引号：{\"key\": value} 而非 {'key': value}",
+          "- 不能有尾随逗号，不能有注释（// 或 /* */）",
+          "- 字符串不能使用单引号",
+          "尝试：JSON.stringify(obj) to see valid format, or use a JSON validator"
+        ]
+      }
+    ],
+    "title_zh": "JSON 解析错误",
+    "solutions_zh": [
+      {
+        "title": "修正 JSON 解析",
+        "steps": [
+          "JSON 字符串格式错误——常见问题:",
+          "- 键名必须使用双引号: {\"key\": value} 而非 {'key': value}",
+          "- 不能有尾随逗号，不能有注释 (// 或 /* */)",
+          "- 字符串不能使用单引号",
+          "试试: JSON.stringify(obj) 查看正确格式，或使用 JSON 验证工具"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-async-001",
+    "title": "UnhandledPromiseRejection / Promise rejection",
+    "patterns": [
+      "UnhandledPromiseRejection",
+      "unhandled promise rejection(.+)?",
+      "(node:\\d+) UnhandledPromiseRejectionWarning"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Handle promise rejection",
+        "steps": [
+          "Add .catch() to the promise chain, or use try/await with catch block",
+          "If using Promise.all: use Promise.allSettled() instead to handle partial failures",
+          "In Express/Koa: always add error-handling middleware at the end"
+        ],
+        "title_zh": "处理 Promise 拒绝",
+        "steps_zh": [
+          "在 Promise 链中添加 .catch()，或使用 try/await 配合 catch 块",
+          "如果使用 Promise.all：改用 Promise.allSettled() 处理部分失败",
+          "在 Express/Koa 中：始终在末尾添加错误处理中间件"
+        ]
+      },
+      {
+        "type": "note",
+        "title": "Best practice",
+        "steps": [
+          "Always await promises in async functions, or chain with .catch()",
+          "Use process.on('unhandledRejection') as a safety net in production"
+        ],
+        "title_zh": "最佳实践",
+        "steps_zh": [
+          "在 async 函数中始终 await Promise，或链式调用 .catch()",
+          "在生产环境中使用 process.on('unhandledRejection') 作为安全网"
+        ]
+      }
+    ],
+    "title_zh": "未处理的 Promise 拒绝",
+    "solutions_zh": [
+      {
+        "title": "处理 Promise 拒绝",
+        "steps": [
+          "在 Promise 链上添加 .catch()，或使用 try/catch 包裹 await",
+          "如果使用 Promise.all: 改用 Promise.allSettled() 处理部分失败",
+          "在 Express/Koa 中: 务必在末尾添加错误处理中间件"
+        ]
+      },
+      {
+        "title": "最佳实践",
+        "steps": [
+          "始终在 async 函数中 await Promise，或链式 .catch()",
+          "在生产环境使用 process.on('unhandledRejection') 作为安全网"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-net-001",
+    "title": "ECONNREFUSED / ENOTFOUND / network error",
+    "patterns": [
+      "ECONNREFUSED (\\S+):(\\d+)",
+      "ENOTFOUND (\\S+)",
+      "fetch failed",
+      "network error",
+      "ETIMEDOUT",
+      "getaddrinfo ENOTFOUND"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Check network connectivity",
+        "steps": [
+          "Can't connect to {host}:{port} — is the server running?",
+          "ping {host} or curl http://{host}:{port}/ to test connectivity",
+          "Check if URL/hostname is correct (typo in API endpoint?)"
+        ],
+        "title_zh": "检查网络连接",
+        "steps_zh": [
+          "无法连接到 {host}:{port}——服务器在运行吗？",
+          "ping {host} 或 curl http://{host}:{port}/ 测试连通性",
+          "检查 URL/主机名是否正确（API 端点拼写错误？）"
+        ]
+      },
+      {
+        "type": "fix",
+        "title": "Fix connection config",
+        "steps": [
+          "Wrong port? Default HTTP=443(HTTPS)/80(HTTP), databases use their own ports",
+          "If localhost: make sure the service is started (npm start, python manage.py runserver, etc.)",
+          "Firewall/VPN issue? Try disabling VPN or checking firewall rules"
+        ],
+        "title_zh": "修复连接配置",
+        "steps_zh": [
+          "端口错误？默认 HTTP=443(HTTPS)/80(HTTP)，数据库使用各自的端口",
+          "如果是 localhost：确保服务已启动（npm start、python manage.py runserver 等）",
+          "防火墙/VPN 问题？尝试关闭 VPN 或检查防火墙规则"
+        ]
+      }
+    ],
+    "title_zh": "网络连接错误 (ECONNREFUSED/ETIMEDOUT)",
+    "solutions_zh": [
+      {
+        "title": "检查网络连接",
+        "steps": [
+          "无法连接到 {host}:{port}——服务器在运行吗？",
+          "先 ping {host} 或用 curl http://{host}:{port}/ 测试",
+          "检查 URL/主机名是否正确（API 端点拼写错误？）"
+        ]
+      },
+      {
+        "title": "修正连接配置",
+        "steps": [
+          "端口错了？HTTP 默认 443(HTTPS)/80(HTTP)，数据库有各自的端口",
+          "如果是 localhost: 确保服务已启动 (npm start, python manage.py runserver 等)",
+          "防火墙/VPN 问题？尝试关闭 VPN 或检查防火墙规则"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "js-syntax-002",
+    "title": "SyntaxError: Identifier Already Declared",
+    "title_zh": "语法错误：标识符已声明",
+    "patterns": [
+      "SyntaxError: Identifier '(?P<name>\\w+)' has already been declared"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix duplicate declaration",
+        "steps": [
+          "You tried to redeclare a variable with let or const in the same scope",
+          "If you need to reassign: remove the let/const keyword on the second occurrence",
+          "Or rename one of the conflicting variables",
+          "In switch/case blocks, wrap each case in { } to create block scope"
+        ],
+        "title_zh": "修复重复声明",
+        "steps_zh": [
+          "你试图在同一作用域中用 let 或 const 重新声明变量",
+          "如果需要重新赋值：在第二次出现时移除 let/const 关键字",
+          "或重命名其中一个冲突的变量",
+          "在 switch/case 块中，用 { } 包裹每个 case 以创建块作用域"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正重复声明",
+        "steps": [
+          "你在同一作用域下用 let 或 const 重复声明了变量",
+          "如需重新赋值: 去除第二个 let/const 关键字",
+          "或重命名冲突变量之一",
+          "在 switch/case 块中将每个 case 用 { } 包裹以创建块作用域"
+        ]
+      }
+    ],
+    "code_fix": "// ❌ Error\nlet x = 1;\nlet x = 2;  // already declared\n\n// ✅ Fix\nlet x = 1;\nx = 2;      // just reassign",
+    "ref": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Already_declared"
+  },
+  {
+    "id": "js-range-001",
+    "title": "RangeError: Maximum Call Stack / Invalid Array Length",
+    "title_zh": "范围错误：堆栈溢出或无效数组长度",
+    "patterns": [
+      "RangeError: Maximum call stack size exceeded",
+      "RangeError: Invalid array length"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix infinite recursion or array",
+        "steps": [
+          "Maximum call stack: you have infinite recursion — check recursive function base case",
+          "Invalid array length: check for negative or NaN array lengths",
+          "For deep recursion, consider iterative approach or trampolining",
+          "React: check for infinite re-render loops in useEffect dependencies"
+        ],
+        "title_zh": "修复无限递归或数组",
+        "steps_zh": [
+          "最大调用栈：存在无限递归——检查递归函数的终止条件",
+          "无效数组长度：检查是否有负数或 NaN 的数组长度",
+          "对于深层递归，考虑迭代方法或蹦床模式",
+          "React：检查 useEffect 依赖项中的无限重渲染循环"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正无限递归或数组",
+        "steps": [
+          "最大调用栈: 存在无限递归——检查递归函数的基本条件",
+          "无效数组长度: 检查是否有负数或 NaN 的数组长度",
+          "深层递归考虑迭代方案或跳板函数",
+          "React: 检查 useEffect 依赖中是否有无限重新渲染"
+        ]
+      }
+    ],
+    "code_fix": "// ❌ Infinite recursion\nfunction loop() { loop(); }\n\n// ✅ Fix - add base case\nfunction countdown(n) {\n  if (n <= 0) return;\n  countdown(n - 1);\n}",
+    "ref": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Too_much_recursion"
+  },
+  {
+    "id": "js-event-loop-001",
+    "title": "Uncaught TypeError: Cannot Read Properties in Callback",
+    "title_zh": "回调中 this 上下文丢失",
+    "patterns": [
+      "TypeError: Cannot read propert(?:y|ies) of undefined \\(reading '(?P<prop>\\w+)'\\)",
+      "Cannot read property '(?P<prop2>\\w+)' of undefined"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix 'this' context in callbacks",
+        "steps": [
+          "You lost the 'this' context in a callback or event handler",
+          "Use arrow functions: () => {} preserves 'this' from outer scope",
+          "Or use .bind(this) on the callback",
+          "React class components: this.handleClick = this.handleClick.bind(this) in constructor"
+        ],
+        "title_zh": "修复回调中的 this 上下文",
+        "steps_zh": [
+          "在回调或事件处理器中丢失了 this 上下文",
+          "使用箭头函数：() => {} 保留外部作用域的 this",
+          "或在回调上使用 .bind(this)",
+          "React 类组件：在构造函数中 this.handleClick = this.handleClick.bind(this)"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修复回调中的 this 上下文",
+        "steps": [
+          "你在回调或事件处理中丢失了 this 上下文",
+          "使用箭头函数: () => {} 保留外层 this",
+          "或在回调上使用 .bind(this)",
+          "React 类组件: 在构造函数中 this.handleClick = this.handleClick.bind(this)"
+        ]
+      }
+    ],
+    "code_fix": "// ❌ Error: 'this' is undefined in callback\nclass Counter {\n  constructor() { this.count = 0; }\n  start() {\n    setInterval(function() { this.count++; }, 1000);\n  }\n}\n\n// ✅ Fix: arrow function preserves 'this'\nclass Counter {\n  constructor() { this.count = 0; }\n  start() {\n    setInterval(() => { this.count++; }, 1000);\n  }\n}",
+    "ref": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions"
+  },
+  {
+    "id": "js-import-001",
+    "title": "Error: Cannot Find Module / Module Not Found",
+    "title_zh": "无法找到模块",
+    "patterns": [
+      "Error: Cannot find module '(?P<mod>[^']+)'",
+      "Cannot find module '(?P<mod2>[^']+)'"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix module resolution",
+        "steps": [
+          "The module path or name is wrong — check spelling and file extension",
+          "Local files: import './foo' instead of import 'foo'",
+          "Built-in modules (fs, path, http) don't need npm install",
+          "npm packages: run 'npm install {module}' to install",
+          "TypeScript: check if you need @types/{module}"
+        ],
+        "title_zh": "修复模块解析",
+        "steps_zh": [
+          "模块路径或名称有误——检查拼写和文件扩展名",
+          "本地文件：使用 import './foo' 而非 import 'foo'",
+          "内置模块（fs、path、http）不需要 npm install",
+          "npm 包：运行 'npm install {module}' 安装",
+          "TypeScript：检查是否需要 @types/{module}"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正模块解析",
+        "steps": [
+          "模块路径或名称不对——检查拼写和文件扩展名",
+          "本地文件: import './foo' 而非 import 'foo'",
+          "内置模块 (fs, path, http) 不需要 npm install",
+          "npm 包: 运行 'npm install {module}' 安装",
+          "TypeScript: 检查是否需要 @types/{module}"
+        ]
+      }
+    ],
+    "code_fix": [
+      "// ❌ Error\nimport myModule from 'myModule';  // No such package\n\n// ✅ Fix\nnpm install myModule\nimport myModule from 'myModule';"
+    ],
+    "ref": "https://nodejs.org/api/modules.html#modules_all_together"
+  },
+  {
+    "id": "js-react-rules-001",
+    "title": "React: Hooks Rules Violation",
+    "title_zh": "React: Hooks 规则违反",
+    "patterns": [
+      "Invalid hook call",
+      "Hooks can only be called inside",
+      "React Hook \"\\w+\" is called conditionally"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix hooks usage",
+        "steps": [
+          "Hooks must be called at the top level of a React function component or custom hook",
+          "Never call hooks inside loops, conditions, or nested functions",
+          "Move conditional logic into the hook body or effects",
+          "Check if you have multiple React instances (e.g. from npm link)"
+        ],
+        "title_zh": "修复 Hooks 用法",
+        "steps_zh": [
+          "Hooks 必须在 React 函数组件或自定义 Hook 的顶层调用",
+          "不要在循环、条件或嵌套函数中调用 Hooks",
+          "将条件逻辑移到 Hook 内部或 effect 中",
+          "检查是否有多个 React 实例（如来自 npm link）"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正 hooks 用法",
+        "steps": [
+          "Hooks 必须在 React 函数组件或自定义 hook 的顶层调用",
+          "绝不在循环、条件判断或嵌套函数中调用 hooks",
+          "将条件逻辑移入 hook 主体或 effects 中",
+          "检查是否有多份 React 实例（如通过 npm link）"
+        ]
+      }
+    ],
+    "code_fix": "// ❌ Conditional hook call\nfunction MyComp({ show }) {\n  if (show) {\n    useEffect(() => {}, []);  // Error!\n  }\n}\n\n// ✅ Fix\nfunction MyComp({ show }) {\n  useEffect(() => {\n    if (show) { /* do something */ }\n  }, [show]);\n}",
+    "ref": "https://react.dev/warnings/invalid-hook-call-warning"
+  },
+  {
+    "id": "js-react-effect-001",
+    "title": "React: useEffect Dependency Warning / Infinite Loop",
+    "title_zh": "React: useEffect 依赖警告 / 无限循环",
+    "patterns": [
+      "Warning: useEffect has a missing dependency",
+      "Warning: Maximum update depth exceeded"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix useEffect dependencies",
+        "steps": [
+          "Missing dependency: add the variable to the dependency array, or use a ref for stable values",
+          "Infinite re-render: an effect updates state that's also a dependency — use functional updates: setCount(c => c + 1)",
+          "Object/array dependencies cause re-render every time — use useMemo/useRef",
+          "Consider useCallback for functions passed as dependencies"
+        ],
+        "title_zh": "修复 useEffect 依赖项",
+        "steps_zh": [
+          "缺少依赖项：将变量添加到依赖数组，或对稳定值使用 ref",
+          "无限重渲染：effect 更新了 state，而 state 也是依赖项——使用函数式更新：setCount(c => c + 1)",
+          "对象/数组依赖项导致每次重渲染——使用 useMemo/useRef",
+          "对作为依赖项传入的函数，考虑使用 useCallback"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正 useEffect 依赖",
+        "steps": [
+          "缺失依赖: 将变量加入依赖数组，或用 ref 存储稳定值",
+          "无限重渲染: effect 更新的状态也是其依赖——用函数式更新: setCount(c => c + 1)",
+          "对象/数组依赖每次渲染都是新引用——用 useMemo/useRef",
+          "作为依赖传入的函数考虑用 useCallback"
+        ]
+      }
+    ],
+    "code_fix": "// ❌ Infinite loop!\nconst [count, setCount] = useState(0);\nuseEffect(() => {\n  setCount(count + 1);  // updates count, triggers re-run\n}, [count]);\n\n// ✅ Fix - functional update\nuseEffect(() => {\n  setCount(c => c + 1);  // No dependency needed!\n}, []);",
+    "ref": "https://react.dev/learn/you-might-not-need-an-effect"
+  },
+  {
+    "id": "js-ts-type-001",
+    "title": "TypeScript: Type Assignment Error",
+    "title_zh": "TypeScript: 类型赋值错误",
+    "patterns": [
+      "Type '(?P<actual>[^']+)' is not assignable to type '(?P<expected>[^']+)'",
+      "is not assignable to type"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix type mismatch",
+        "steps": [
+          "The value you're assigning doesn't match the declared type",
+          "Check if you're missing a property: Partial<Type> or make property optional (?:)",
+          "Array type mismatch: string[] vs number[] — check data source",
+          "Use 'as' type assertion if you know the runtime type, but prefer proper typing"
+        ],
+        "title_zh": "修复类型不匹配",
+        "steps_zh": [
+          "你赋的值与声明的类型不匹配",
+          "检查是否缺少属性：使用 Partial<Type> 或将属性设为可选（?:）",
+          "数组类型不匹配：string[] vs number[]——检查数据源",
+          "如果你知道运行时类型，使用 'as' 类型断言，但更推荐正确的类型定义"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正类型不匹配",
+        "steps": [
+          "你赋的值与声明的类型不匹配",
+          "检查是否缺少属性: Partial<Type> 或将属性标为可选 (?:)",
+          "数组类型不匹配: string[] vs number[]——检查数据源",
+          "如果确定运行时类型可用 'as' 类型断言，但首选正确类型定义"
+        ]
+      }
+    ],
+    "code_fix": "// ❌ Error\ninterface User { name: string; age: number; }\nconst u: User = { name: 'Alice' };  // missing 'age'\n\n// ✅ Fix\ninterface User { name: string; age?: number; }  // age is optional\nconst u: User = { name: 'Alice' };",
+    "ref": "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
+  }
+]

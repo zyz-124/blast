@@ -1,0 +1,194 @@
+{
+  "name": "blast",
+  "displayName": "Blast — Instant Error Fixer",
+  "version": "0.5.0",
+  "description": "Run your code, catch errors, get fixes instantly. Offline, zero config.",
+  "publisher": "blast-debug",
+  "icon": "icons/blast-icon.png",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onView:blast.sidebar"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "blast.analyzeSelection",
+        "title": "Blast: Analyze Selected Error",
+        "icon": "$(search)"
+      },
+      {
+        "command": "blast.runAndAnalyze",
+        "title": "Blast: Run File & Fix",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "blast.pasteError",
+        "title": "Blast: Paste Error to Analyze",
+        "icon": "$(clippy)"
+      },
+      {
+        "command": "blast.focusSidebar",
+        "title": "Blast: Open Sidebar"
+      },
+      {
+        "command": "blast.importKnowledgeBase",
+        "title": "Blast: Import Knowledge Pack",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "blast.exportKnowledgeBase",
+        "title": "Blast: Export Custom KB",
+        "icon": "$(save-as)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "blast.analyzeSelection",
+        "key": "ctrl+alt+b",
+        "when": "editorHasSelection"
+      },
+      {
+        "command": "blast.runAndAnalyze",
+        "key": "ctrl+alt+r",
+        "when": "editorTextFocus"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "blast.analyzeSelection",
+          "when": "editorHasSelection",
+          "group": "blast@1"
+        },
+        {
+          "command": "blast.runAndAnalyze",
+          "group": "blast@2"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "blast.runAndAnalyze",
+          "when": "resourceExtname =~ /\\.(py|js|ts|rb|go)$/",
+          "group": "navigation@1",
+          "icon": "$(debug-start)"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "blast.runAndAnalyze",
+          "when": "resourceExtname =~ /\\.(py|js|ts|rb|go)$/",
+          "group": "blast"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "blast-sidebar",
+          "title": "Blast",
+          "icon": "$(zap)"
+        }
+      ]
+    },
+    "views": {
+      "blast-sidebar": [
+        {
+          "id": "blast.sidebar",
+          "name": "Error Analysis",
+          "type": "webview"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Blast",
+      "properties": {
+        "blast.locale": {
+          "type": "string",
+          "default": "en",
+          "enum": ["en", "zh", "ja", "ko", "de", "fr", "es", "pt"],
+          "description": "Display language (界面语言)"
+        },
+        "blast.runner.python": {
+          "type": "string",
+          "default": "python",
+          "description": "Command to run Python files"
+        },
+        "blast.runner.javascript": {
+          "type": "string",
+          "default": "node",
+          "description": "Command to run JavaScript files"
+        },
+        "blast.runner.typescript": {
+          "type": "string",
+          "default": "npx ts-node",
+          "description": "Command to run TypeScript files"
+        },
+        "blast.runner.go": {
+          "type": "string",
+          "default": "go run",
+          "description": "Command to run Go files"
+        },
+        "blast.runner.ruby": {
+          "type": "string",
+          "default": "ruby",
+          "description": "Command to run Ruby files"
+        },
+        "blast.showConfidence": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show match confidence percentage in results"
+        },
+        "blast.ai.provider": {
+          "type": "string",
+          "default": "openai",
+          "enum": ["openai", "deepseek", "custom"],
+          "description": "AI provider (OpenAI-compatible API)"
+        },
+        "blast.ai.endpoint": {
+          "type": "string",
+          "default": "https://api.openai.com/v1",
+          "description": "API endpoint URL"
+        },
+        "blast.ai.model": {
+          "type": "string",
+          "default": "gpt-4o-mini",
+          "description": "AI model name"
+        },
+        "blast.ai.maxTokens": {
+          "type": "number",
+          "default": 2000,
+          "minimum": 100,
+          "maximum": 8192,
+          "description": "Max response tokens"
+        },
+        "blast.ai.temperature": {
+          "type": "number",
+          "default": 0.3,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "AI response temperature"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "publish": "vsce publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}

@@ -1,0 +1,245 @@
+[
+  {
+    "id": "go-build-001",
+    "title": "undefined: undeclared package or name",
+    "patterns": [
+      "undefined: ([^\\s]+)",
+      "undeclared name: (.+?)$"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Declare the identifier",
+        "steps": [
+          "Variable/function '{name}' is used but never declared",
+          "Check for typos — Go is case-sensitive (MyFunc ≠ myFunc)",
+          "If it's from another package, import it: import \"pkg/path\""
+        ],
+        "title_zh": "声明标识符",
+        "steps_zh": [
+          "变量/函数 '{name}' 被使用但从未声明",
+          "检查 for typos — Go is case-sensitive (MyFunc ≠ myFunc)",
+          "如果 it's from another package, import it：import \"pkg/path\""
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Common causes",
+        "steps": [
+          "Short variable declaration := in wrong scope",
+          "Assigned but never used (unused variables are compile errors in Go)",
+          "Imported package not used — remove the import line"
+        ],
+        "title_zh": "常见原因",
+        "steps_zh": [
+          "短变量声明 := 在错误的作用域",
+          "已赋值但未使用（未使用的变量在 Go 中是编译错误）",
+          "导入了未使用的包——删除导入行"
+        ]
+      }
+    ],
+    "title_zh": "未定义：未声明的包或名称",
+    "solutions_zh": [
+      {
+        "title": "声明标识符",
+        "steps": [
+          "变量/函数 '{name}' 被使用但从未声明",
+          "检查拼写——Go 区分大小写（MyFunc ≠ myFunc）",
+          "如果来自另一个包: import \"pkg/path\""
+        ]
+      },
+      {
+        "title": "常见原因",
+        "steps": [
+          ":= 短变量声明在错误的作用域",
+          "已赋值但从未使用（Go 中未使用的变量是编译错误）",
+          "包已导入但未使用——删除 import 行"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "go-import-001",
+    "title": "imported and not used",
+    "patterns": [
+      "imported and not used: \"(.+?)\""
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Remove unused import or use the package",
+        "steps": [
+          "Package '{pkg}' is imported but nothing from it is used",
+          "Either remove the import line, or use a symbol from that package",
+          "For side-effect imports (_): change to import _ \"pkg\" if initialization is needed"
+        ],
+        "title_zh": "移除未使用的导入或使用该包",
+        "steps_zh": [
+          "包 '{pkg}' 已导入但未使用其中任何内容",
+          "要么删除导入行，要么使用该包中的某个符号",
+          "对于副作用导入（_）：如果需要初始化，改为 import _ \"pkg\""
+        ]
+      }
+    ],
+    "title_zh": "包已导入但未使用",
+    "solutions_zh": [
+      {
+        "title": "移除未使用的导入或使用该包",
+        "steps": [
+          "包 '{pkg}' 已导入但未使用任何符号",
+          "要么删除 import 行，要么使用该包的某个符号",
+          "如果只需要包的初始化副作用: 改为 import _ \"pkg\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "go-nil-001",
+    "title": "nil pointer dereference / panic",
+    "patterns": [
+      "panic: runtime error: invalid memory address or nil pointer dereference",
+      "nil pointer dereference"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Add nil check before use",
+        "steps": [
+          "You're accessing a field/method on a nil pointer",
+          "Before access: if ptr == nil { return err }",
+          "When returning from functions that can fail, always check the error: if err != nil { return err }"
+        ],
+        "title_zh": "使用前添加 nil 检查",
+        "steps_zh": [
+          "你正在访问空指针的字段/方法",
+          "在进行 access 之前：if ptr == nil { return err }",
+          "从可能失败的函数返回时，始终检查错误：if err != nil { return err }"
+        ]
+      },
+      {
+        "type": "note",
+        "title": "Go best practice",
+        "steps": [
+          "Always check errors — 'Errors are values' in Go",
+          "Use helper functions like require.NotNil(t, obj) in tests"
+        ],
+        "title_zh": "Go 最佳实践",
+        "steps_zh": [
+          "始终 check errors — 'Errors are values' in Go",
+          "在测试中使用辅助函数如 require.NotNil(t, obj)"
+        ]
+      }
+    ],
+    "title_zh": "空指针解引用 / panic",
+    "solutions_zh": [
+      {
+        "title": "在访问前添加 nil 检查",
+        "steps": [
+          "你在空指针上访问了字段/方法",
+          "访问前: if ptr == nil { return err }",
+          "在可能失败的函数中，务必先检查错误: if err != nil { return err }"
+        ]
+      },
+      {
+        "title": "Go 最佳实践",
+        "steps": [
+          "始终检查错误——'Errors are values' 是 Go 的哲学",
+          "在测试中使用 helper 如 require.NotNil(t, obj)"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "go-type-001",
+    "title": "cannot use X as Y type",
+    "patterns": [
+      "cannot use (.+?) (as|in) type (.+?)$",
+      "cannot convert (.+?) \\(type (.+?)\\) to type (.+?)$"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix type mismatch",
+        "steps": [
+          "Type assertion needed: val.(TargetType) for interface{} conversions",
+          "Check struct tags if this is JSON unmarshaling issue",
+          "For numeric types: explicit conversion required (Go doesn't auto-convert int ↔ float)"
+        ],
+        "title_zh": "修复类型不匹配",
+        "steps_zh": [
+          "需要类型断言：interface{} 转换使用 val.(TargetType)",
+          "如果是 JSON 反序列化问题，检查 struct 标签",
+          "对数值类型：需要显式转换（Go 不会自动转换 int ↔ float）"
+        ]
+      }
+    ],
+    "title_zh": "类型不匹配：不能将 X 用作 Y 类型",
+    "solutions_zh": [
+      {
+        "title": "修正类型不匹配",
+        "steps": [
+          "需要类型断言: val.(TargetType) 用于 interface{} 转换",
+          "检查结构体标签，如果是 JSON 反序列化问题",
+          "数值类型: 需要显式转换（Go 不会自动转换 int ↔ float）"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "go-concurrent-001",
+    "title": "fatal error: concurrent map writes / data race",
+    "patterns": [
+      "fatal error: concurrent map writes?",
+      "concurrent map read and map write",
+      "DATA RACE"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix race condition",
+        "steps": [
+          "Multiple goroutines are writing to the same map simultaneously",
+          "Use sync.Mutex to protect map access, or sync.RWMutex for read-heavy maps",
+          "Or use sync.Map for simple concurrent-safe map operations"
+        ],
+        "title_zh": "修复竞态条件",
+        "steps_zh": [
+          "多个 goroutine 同时写入同一个 map",
+          "使用 sync.Mutex 来 protect map access, or sync.RWMutex for read-heavy maps",
+          "或者使用 sync.Map for simple concurrent-safe map operations"
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Detect races",
+        "steps": [
+          "Run with race detector: go run -race main.go",
+          "This will show exactly which goroutines conflict at which lines"
+        ],
+        "title_zh": "检测竞态条件",
+        "steps_zh": [
+          "用竞态检测器运行：go run -race main.go",
+          "这将 show exactly which goroutines conflict at which lines"
+        ]
+      }
+    ],
+    "title_zh": "并发 map 写入 / 数据竞争",
+    "solutions_zh": [
+      {
+        "title": "修正竞态条件",
+        "steps": [
+          "多个 goroutine 同时写入同一个 map",
+          "使用 sync.Mutex 保护 map 访问，读多写少用 sync.RWMutex",
+          "或使用 sync.Map 进行简单的并发安全 map 操作"
+        ]
+      },
+      {
+        "title": "检测竞态问题",
+        "steps": [
+          "使用竞态检测器运行: go run -race main.go",
+          "这会精确显示哪些 goroutine 在哪些行产生冲突"
+        ]
+      }
+    ]
+  }
+]

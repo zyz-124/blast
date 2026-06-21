@@ -1,0 +1,1408 @@
+[
+  {
+    "id": "py-import-001",
+    "title": "ModuleNotFoundError",
+    "patterns": [
+      "ModuleNotFoundError: No module named '([^']+)'"
+    ],
+    "solutions": [
+      {
+        "type": "install",
+        "title": "Install missing package",
+        "steps": [
+          "pip install {module}",
+          "Check if virtual environment is activated: which python / where python",
+          "Add to requirements.txt for future installs"
+        ],
+        "title_zh": "安装缺失的包",
+        "steps_zh": [
+          "运行：pip install {module}",
+          "检查 if virtual environment is activated：which python / where python",
+          "添加 to requirements.txt for future installs"
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Check import path",
+        "steps": [
+          "Verify the module name is spelled correctly",
+          "If it's a local module, check sys.path or PYTHONPATH"
+        ],
+        "title_zh": "检查导入路径",
+        "steps_zh": [
+          "验证 the module name is spelled correctly",
+          "如果 it's a local module，check sys.path or PYTHONPATH"
+        ]
+      }
+    ],
+    "ref": "https://docs.python.org/3/library/exceptions.html#ModuleNotFoundError",
+    "title_zh": "模块未找到 (ModuleNotFoundError)",
+    "solutions_zh": [
+      {
+        "title": "安装缺失的包",
+        "steps": [
+          "pip install {module}",
+          "确认虚拟环境是否激活: which python / where python",
+          "将包名加入 requirements.txt"
+        ]
+      },
+      {
+        "title": "检查导入路径",
+        "steps": [
+          "确认模块名称拼写正确",
+          "如果是本地模块，检查 sys.path 或 PYTHONPATH"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nimport {module}\n\n# ✅ Fix\npip install {module}\nimport {module}"
+  },
+  {
+    "id": "py-import-002",
+    "title": "ImportError: cannot import name",
+    "patterns": [
+      "ImportError: cannot import name '([^']+)' from '([^']+)'",
+      "ImportError: cannot import name '([^']+)'"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Check what's available in the module",
+        "steps": [
+          "Run: python -c \"import {module2}; print(dir({module2}))\" to see available names",
+          "The attribute may have been renamed or removed in a newer version",
+          "Check if you need to import from a submodule instead"
+        ],
+        "title_zh": "检查模块中可用的内容",
+        "steps_zh": [
+          "运行：python -c \"import {module2}; print(dir({module2}))\" 查看可用名称",
+          "该属性可能已在较新版本中被重命名或移除",
+          "检查是否需要从子模块导入"
+        ]
+      },
+      {
+        "type": "fix",
+        "title": "Fix import statement",
+        "steps": [
+          "Try: from {module2} import {name} (if using bare import)",
+          "Check docs for the correct import path"
+        ],
+        "title_zh": "修复导入语句",
+        "steps_zh": [
+          "尝试：from {module2} import {name}（如果使用裸导入）",
+          "查阅文档获取正确的导入路径"
+        ]
+      }
+    ],
+    "title_zh": "导入错误：无法导入名称",
+    "solutions_zh": [
+      {
+        "title": "检查模块中的可用属性",
+        "steps": [
+          "运行: python -c \"import {module2}; print(dir({module2}))\" 查看可用名称",
+          "属性可能在新版本中已重命名或移除",
+          "确认是否需要从子模块导入"
+        ]
+      },
+      {
+        "title": "修正 import 语句",
+        "steps": [
+          "尝试: from {module2} import {name}",
+          "查阅文档确认正确的导入路径"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nfrom {module2} import {name}\n\n# ✅ Fix\nimport {module2}\nprint(dir({module2}))  # Check available names\nfrom {module2} import correct_name"
+  },
+  {
+    "id": "py-syntax-001",
+    "title": "SyntaxError",
+    "patterns": [
+      "SyntaxError: (.+)",
+      "File \".+\", line (\\d+)\\s*\\n(.*)\\n\\s*\\^\\s*\\nSyntaxError"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix syntax error at indicated line",
+        "steps": [
+          "Look at the line number and ^ pointer in the error message",
+          "Common causes: missing colon (:), mismatched brackets, wrong indentation",
+          "For f-strings: check for unescaped braces or nested quotes"
+        ],
+        "title_zh": "修复指定行的语法错误",
+        "steps_zh": [
+          "查看错误消息中的行号和 ^ 指针",
+          "常见原因：缺少冒号（:）、括号不匹配、缩进错误",
+          "f-string：检查未转义的花括号或嵌套引号"
+        ]
+      },
+      {
+        "type": "note",
+        "title": "Common SyntaxError patterns",
+        "steps": [
+          "if/for/while/def/class need a colon at end",
+          "Strings must use matching quotes (' ' or \" \")",
+          "Indentation must be consistent (use spaces, not tabs + spaces mixed)"
+        ],
+        "title_zh": "常见语法错误模式",
+        "steps_zh": [
+          "if/for/while/def/class 末尾需要冒号",
+          "字符串必须使用成对引号（' ' 或 \" \"）",
+          "缩进必须一致（用空格，不要混用 tab 和空格）"
+        ]
+      }
+    ],
+    "title_zh": "语法错误 (SyntaxError)",
+    "solutions_zh": [
+      {
+        "title": "修正指示行号的语法错误",
+        "steps": [
+          "查看错误信息中 ^ 指针指向的位置和行号",
+          "常见原因: 缺少冒号(:)、括号不匹配、缩进错误",
+          "f-string: 检查是否有未转义的大括号或嵌套引号"
+        ]
+      },
+      {
+        "title": "常见语法错误模式",
+        "steps": [
+          "if/for/while/def/class 后面必须有冒号",
+          "字符串必须使用匹配的引号",
+          "缩进必须保持一致（建议全部使用空格，不要混用 Tab）"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nif x == 5\n    print('x is 5')\n\n# ✅ Fix\nif x == 5:\n    print('x is 5')"
+  },
+  {
+    "id": "py-indent-001",
+    "title": "IndentationError",
+    "patterns": [
+      "IndentationError: (.+)",
+      "unindent does not match any outer indentation level",
+      "expected an indented block"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix indentation",
+        "steps": [
+          "Mixing tabs and spaces is the #1 cause — convert all tabs to spaces (4 spaces = 1 indent level)",
+          "In VSCode: click bottom-right status bar → Indent: Convert to Spaces",
+          "Run: python -tt your_file.py to detect tab/space mixing"
+        ],
+        "title_zh": "修复缩进",
+        "steps_zh": [
+          "混用 tab 和空格是最常见原因——将所有 tab 转为空格（4 个空格 = 1 个缩进级别）",
+          "在 VSCode 中：点击右下角状态栏 → 缩进：转换为空格",
+          "运行：python -tt 你的文件.py 检测 tab/空格混用"
+        ]
+      }
+    ],
+    "title_zh": "缩进错误 (IndentationError)",
+    "solutions_zh": [
+      {
+        "title": "修正缩进",
+        "steps": [
+          "Tab 和空格混用是头号原因——将所有 Tab 转换为空格（4 个空格 = 1 级缩进）",
+          "在 VSCode 中：点击底部状态栏 → 缩进：转换为空格",
+          "运行: python -tt your_file.py 检测 Tab/空格混用"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error (Tab + Space mixed)\nif True:\n\tprint('Tab')\n    print('Space')\n\n# ✅ Fix (all spaces, no tabs)\nif True:\n    print('Indented correctly')\n    print('All 4 spaces')"
+  },
+  {
+    "id": "py-type-002",
+    "title": "TypeError: unsupported operand",
+    "patterns": [
+      "TypeError: unsupported operand type\\(s\\) for ([^:]+): '([^']+)' and '([^']+)'"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix type mismatch",
+        "steps": [
+          "You're trying to use operator {op1} on a {type1} and a {type2}",
+          "Convert one type to match: str(x), int(y), float(z), list(x), etc.",
+          "If this happened with +, you may be concatenating instead of adding — check variable types"
+        ],
+        "title_zh": "修复类型不匹配",
+        "steps_zh": [
+          "你试图对 {type1} 类型和 {type2} 类型使用 {op1} 运算符",
+          "转换类型使其匹配：str(x)、int(y)、float(z)、list(x) 等",
+          "如果使用 + 发生此错误，你可能在进行拼接而非相加——检查变量类型"
+        ]
+      }
+    ],
+    "title_zh": "类型错误：不支持的操作数类型",
+    "solutions_zh": [
+      {
+        "title": "修正类型不匹配",
+        "steps": [
+          "你对 {type1} 和 {type2} 使用了 {op1} 运算符，但类型不兼容",
+          "转换类型以匹配: str(x)、int(y)、float(z)、list(x) 等",
+          "如果报错出现在 + 操作：你可能在拼接字符串而非相加——检查变量类型"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nresult = 'hello' + 42\n\n# ✅ Fix\nresult = 'hello' + str(42)\n# or\nresult = f'hello{42}'"
+  },
+  {
+    "id": "py-name-001",
+    "title": "NameError: name is not defined",
+    "patterns": [
+      "NameError: name '([^']+)' is not defined"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Define or fix the variable name",
+        "steps": [
+          "Check spelling — Python is case-sensitive (myVar ≠ myvar)",
+          "Make sure the variable is assigned before it's used (not after)",
+          "If it's a built-in function, you may have overwritten it by accident (e.g., list = [...])"
+        ],
+        "title_zh": "定义或修复变量名",
+        "steps_zh": [
+          "检查 spelling — Python is case-sensitive (myVar ≠ myvar)",
+          "确保变量在使用前已赋值（而非之后）",
+          "如果是内置函数，你可能意外覆盖了它（如 list = [...]）"
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Check scope",
+        "steps": [
+          "Is the variable defined inside a function but used outside?",
+          "Did you forget to pass it as an argument?"
+        ],
+        "title_zh": "检查作用域",
+        "steps_zh": [
+          "变量是否在函数内定义但在外部使用？",
+          "是否忘了将其作为参数传入？"
+        ]
+      }
+    ],
+    "title_zh": "名称错误：变量名未定义",
+    "solutions_zh": [
+      {
+        "title": "定义或修正变量名",
+        "steps": [
+          "检查拼写——Python 区分大小写（myVar ≠ myvar）",
+          "确保变量在使用之前已被赋值",
+          "如果它是一个内置函数名，你可能意外覆盖了它（如 list = [...]）"
+        ]
+      },
+      {
+        "title": "检查作用域",
+        "steps": [
+          "变量是否定义在函数内部却在外部使用？",
+          "是否忘记作为参数传递？"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nprint(undefined_var)\n\n# ✅ Fix\nundefined_var = 'defined now'\nprint(undefined_var)"
+  },
+  {
+    "id": "py-keyword-001",
+    "title": "KeyError: dictionary key not found",
+    "patterns": [
+      "KeyError: '([^']+)'"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Handle missing key safely",
+        "steps": [
+          "Use .get() method: value = my_dict.get('key', default_value)",
+          "Check available keys: print(my_dict.keys())",
+          "If key might have whitespace issues, strip it: my_dict.get(key.strip())"
+        ],
+        "title_zh": "安全处理缺失的键",
+        "steps_zh": [
+          "使用 .get() 方法：value = my_dict.get('key', default_value)",
+          "查看可用键：print(my_dict.keys())",
+          "如果键可能有空格问题，清理它：my_dict.get(key.strip())"
+        ]
+      }
+    ],
+    "title_zh": "键错误：字典中找不到键",
+    "solutions_zh": [
+      {
+        "title": "安全地处理不存在的键",
+        "steps": [
+          "使用 .get() 方法: value = my_dict.get('key', default_value)",
+          "检查可用的键: print(my_dict.keys())",
+          "如果有空格问题: my_dict.get(key.strip())"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nd = {'name': 'Alice'}\nprint(d['age'])\n\n# ✅ Fix\nprint(d.get('age', 'N/A'))\n# KeyError → None + default"
+  },
+  {
+    "id": "py-index-001",
+    "title": "IndexError: list index out of range",
+    "patterns": [
+      "IndexError: (list|tuple) index out of range",
+      "IndexError: (\\d+) index out of range"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix index bounds",
+        "steps": [
+          "List indices start at 0, so valid range is 0 to len(list)-1",
+          "Before accessing: if i < len(my_list): ...",
+          "Use negative indexing carefully: -1 is last element, -len(list) is first"
+        ],
+        "title_zh": "修复索引边界",
+        "steps_zh": [
+          "列表索引从 0 开始，所以有效范围是 0 到 len(列表)-1",
+          "访问前：if i < len(my_list): ...",
+          "小心使用负索引：-1 是最后一个元素，-len(列表) 是第一个"
+        ]
+      }
+    ],
+    "title_zh": "索引错误：列表索引越界",
+    "solutions_zh": [
+      {
+        "title": "修正索引边界",
+        "steps": [
+          "列表索引从 0 开始，有效范围是 0 到 len(list)-1",
+          "访问前: if i < len(my_list): ...",
+          "小心使用负数索引: -1 是最后一个元素，-len(list) 是第一个"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nitems = [1, 2, 3]\nprint(items[5])\n\n# ✅ Fix\nif len(items) > 5:\n    print(items[5])\nelse:\n    print('Index out of range')"
+  },
+  {
+    "id": "py-value-001",
+    "title": "ValueError: invalid literal for int()",
+    "patterns": [
+      "ValueError: invalid literal for int\\(\\) with base \\d+: '([^']+)'",
+      "ValueError: (.+)"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix value conversion",
+        "steps": [
+          "The string '{val}' cannot be converted to the target type",
+          "Strip whitespace first: int(s.strip())",
+          "Handle non-numeric input: try int(s) except ValueError: use default"
+        ],
+        "title_zh": "修复值转换",
+        "steps_zh": [
+          "字符串 '{val}' 无法转换到目标类型",
+          "先去除空格：int(s.strip())",
+          "处理非数字输入：try int(s) except ValueError: 使用默认值"
+        ]
+      }
+    ],
+    "title_zh": "值错误：类型转换失败",
+    "solutions_zh": [
+      {
+        "title": "修正值转换",
+        "steps": [
+          "字符串 '{val}' 无法转换为目标类型",
+          "先去除空格: int(s.strip())",
+          "处理非数值输入: try int(s) except ValueError: 使用默认值"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nint('abc')\n\n# ✅ Fix\ntry:\n    num = int(s)\nexcept ValueError:\n    num = 0  # fallback"
+  },
+  {
+    "id": "py-file-001",
+    "title": "FileNotFoundError",
+    "patterns": [
+      "FileNotFoundError: \\[Errno 2\\] No such file or directory: '([^']+)'"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix file path",
+        "steps": [
+          "Check if the file exists: os.path.exists('{file}')",
+          "Use absolute paths or os.path.join() instead of hardcoded relative paths",
+          "On Windows: paths need double backslashes or raw strings: r'C:\\path\\to\\file'"
+        ],
+        "title_zh": "修复文件路径",
+        "steps_zh": [
+          "检查文件是否存在：os.path.exists('{file}')",
+          "使用绝对路径或 os.path.join() 代替硬编码的相对路径",
+          "Windows 上：路径需要双反斜杠或原始字符串：r'C:\\path\\to\\file'"
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Check working directory",
+        "steps": [
+          "Print os.getcwd() to see where Python is looking",
+          "The path is relative to where you ran the script, not where the script lives"
+        ],
+        "title_zh": "检查工作目录",
+        "steps_zh": [
+          "打印 os.getcwd() 查看 Python 当前查找目录",
+          "路径相对于运行脚本的位置，而非脚本所在位置"
+        ]
+      }
+    ],
+    "title_zh": "文件未找到 (FileNotFoundError)",
+    "solutions_zh": [
+      {
+        "title": "修正文件路径",
+        "steps": [
+          "检查文件是否存在: os.path.exists('{file}')",
+          "使用绝对路径或 os.path.join() 而非硬编码相对路径",
+          "Windows 下路径需要双反斜杠或原始字符串: r'C:\\path\\to\\file'"
+        ]
+      },
+      {
+        "title": "检查工作目录",
+        "steps": [
+          "打印 os.getcwd() 查看 Python 从哪里找文件",
+          "路径是相对于你运行脚本的位置，而非脚本文件所在位置"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "py-zero-001",
+    "title": "ZeroDivisionError: division by zero",
+    "patterns": [
+      "ZeroDivisionError: (division|modulo) by zero"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Handle division by zero",
+        "steps": [
+          "Check divisor before dividing: if b != 0: result = a / b",
+          "Or use try/except ZeroDivisionError",
+          "Consider: result = a / b if b else float('inf') or 0"
+        ],
+        "title_zh": "处理除以零",
+        "steps_zh": [
+          "除法前检查除数：if b != 0: result = a / b",
+          "或使用 try/except ZeroDivisionError",
+          "考虑：result = a / b if b else float('inf') or 0"
+        ]
+      }
+    ],
+    "title_zh": "除零错误 (ZeroDivisionError)",
+    "solutions_zh": [
+      {
+        "title": "处理除以零",
+        "steps": [
+          "在除法前检查除数: if b != 0: result = a / b",
+          "或使用 try/except ZeroDivisionError",
+          "if b else float('inf') 或 0"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nresult = 10 / 0\n\n# ✅ Fix\nb = 0\nresult = a / b if b != 0 else float('inf')"
+  },
+  {
+    "id": "py-attr-001",
+    "title": "AttributeError: object has no attribute",
+    "patterns": [
+      "AttributeError: '([^']+)' object has no attribute '([^']+)'"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix attribute access",
+        "steps": [
+          "The {type} object doesn't have '{attr}'",
+          "Check the actual attributes: dir(obj) or type(obj).__dict__",
+          "Possible typo? Check spelling and case sensitivity"
+        ],
+        "title_zh": "修复属性访问",
+        "steps_zh": [
+          "{type} 对象没有 '{attr}' 属性",
+          "检查实际属性：dir(obj) 或 type(obj).__dict__",
+          "可能的拼写错误？检查拼写和大小写"
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Common causes",
+        "steps": [
+          "Calling a method before it's defined (order of operations)",
+          "Using a library method that was removed/renamed in newer versions",
+          "Forgot to call a function that returns the object with that attribute"
+        ],
+        "title_zh": "常见原因",
+        "steps_zh": [
+          "在定义之前调用了方法（操作顺序问题）",
+          "使用了已在较新版本中移除/重命名的库方法",
+          "忘了调用返回带该属性对象的函数"
+        ]
+      }
+    ],
+    "title_zh": "属性错误：对象没有该属性",
+    "solutions_zh": [
+      {
+        "title": "修正属性访问",
+        "steps": [
+          "{type} 类型的对象没有 '{attr}' 属性",
+          "检查实际属性: dir(obj) 或 type(obj).__dict__",
+          "是不是拼写错误？检查拼写和大小写"
+        ]
+      },
+      {
+        "title": "常见原因",
+        "steps": [
+          "在定义方法前就调用了它（执行顺序问题）",
+          "使用的库方法在新版本中已移除或重命名",
+          "忘记调用返回该属性的函数"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "py-recursion-001",
+    "title": "RecursionError: maximum recursion depth exceeded",
+    "patterns": [
+      "RecursionError: maximum recursion depth exceeded"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix infinite recursion",
+        "steps": [
+          "Your recursive function never reaches its base case",
+          "Add or fix the base condition (termination condition)",
+          "If recursion is intentional but deep: sys.setrecursionlimit(2000)"
+        ],
+        "title_zh": "修复无限递归",
+        "steps_zh": [
+          "你的递归函数从未到达终止条件",
+          "添加 or fix the base condition (termination condition)",
+          "如果 recursion is intentional but deep：sys.setrecursionlimit(2000)"
+        ]
+      },
+      {
+        "type": "note",
+        "title": "Debug tips",
+        "steps": [
+          "Print arguments at each recursive call to find the loop",
+          "Most common cause: forgot return in base case, or wrong base condition"
+        ],
+        "title_zh": "调试技巧",
+        "steps_zh": [
+          "打印 arguments at each recursive call to find the loop",
+          "最常见原因：忘了在终止条件中写 return，或终止条件写错了"
+        ]
+      }
+    ],
+    "title_zh": "递归错误：超过最大递归深度",
+    "solutions_zh": [
+      {
+        "title": "修正无限递归",
+        "steps": [
+          "你的递归函数没有到达终止条件",
+          "添加或修正基准条件（终止条件）",
+          "如果递归确实需要很深: sys.setrecursionlimit(2000)"
+        ]
+      },
+      {
+        "title": "调试技巧",
+        "steps": [
+          "在每次递归调用时打印参数，找出循环",
+          "最常见原因：忘记在基准条件中 return，或使用了错误的终止条件"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "py-os-001",
+    "title": "OSError / Permission Error",
+    "title_zh": "操作系统错误 / 权限错误",
+    "patterns": [
+      "OSError: \\[Errno \\d+\\] (?P<reason>.+)",
+      "PermissionError: \\[Errno 13\\]",
+      "Permission denied: '(?P<file>[^']+)'"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Check file permissions",
+        "steps": [
+          "Check if file is read-only or locked by another process",
+          "Linux/macOS: chmod 644 file or chown user:group file",
+          "Windows: Right-click → Properties → uncheck Read-only"
+        ],
+        "title_zh": "检查文件权限",
+        "steps_zh": [
+          "检查是否 file is read-only or locked by another process",
+          "Linux/macOS：chmod 644 文件 或 chown 用户:组 文件",
+          "Windows：右键 → 属性 → 取消\"只读\"勾选"
+        ]
+      },
+      {
+        "type": "fix",
+        "title": "Resources in use",
+        "steps": [
+          "The file or port is already open by another program",
+          "Close the other program, or use a different file/port",
+          "Windows: Check Task Manager for the process holding the file"
+        ],
+        "title_zh": "资源被占用",
+        "steps_zh": [
+          "文件或端口已被其他程序打开",
+          "关闭 the other program, or use a different file/port",
+          "Windows：在任务管理器中查找占用文件的进程"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "检查文件权限",
+        "steps": [
+          "检查文件是否为只读或被其他进程锁定",
+          "Linux/macOS: chmod 644 file 或 chown user:group file",
+          "Windows: 右键 → 属性 → 取消只读"
+        ]
+      },
+      {
+        "title": "资源被占用",
+        "steps": [
+          "文件或端口已被其他程序打开",
+          "关闭其他程序，或使用不同的文件/端口",
+          "Windows: 在任务管理器中查找占用文件的进程"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nwith open('/root/protected.txt', 'w') as f:\n    f.write('data')\n\n# ✅ Fix - check permissions first\nimport os\nif os.access('file.txt', os.W_OK):\n    with open('file.txt', 'w') as f:\n        f.write('data')",
+    "ref": "https://docs.python.org/3/library/exceptions.html#OSError"
+  },
+  {
+    "id": "py-conn-001",
+    "title": "ConnectionError / Connection Refused",
+    "title_zh": "连接错误 / 连接被拒绝",
+    "patterns": [
+      "ConnectionRefusedError: \\[Errno 111\\]",
+      "ConnectionError:",
+      "requests\\.exceptions\\.ConnectionError"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Check if server is running",
+        "steps": [
+          "The service you're trying to connect to is not running or not accepting connections",
+          "Verify: curl http://localhost:8000/ or ping the host",
+          "Check if the service started correctly and is listening on the expected port"
+        ],
+        "title_zh": "检查服务器是否在运行",
+        "steps_zh": [
+          "尝试连接的服务未运行或未接受连接",
+          "验证：curl http://localhost:8000/ 或 ping 主机",
+          "检查是否 the service started correctly and is listening on the expected port"
+        ]
+      },
+      {
+        "type": "fix",
+        "title": "Fix connection settings",
+        "steps": [
+          "Check port number and host address",
+          "Firewall may be blocking the connection — check firewall rules",
+          "In Docker: ensure port mapping is correct (-p 8000:8000)"
+        ],
+        "title_zh": "修复连接设置",
+        "steps_zh": [
+          "检查端口号和主机地址",
+          "防火墙可能阻止了连接——检查防火墙规则",
+          "在 Docker 中：确保端口映射正确（-p 8000:8000）"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "检查服务是否运行",
+        "steps": [
+          "你要连接的服务未运行或未接受连接",
+          "验证: curl http://localhost:8000/ 或 ping 主机",
+          "检查服务是否正常启动并在预期端口上监听"
+        ]
+      },
+      {
+        "title": "修正连接设置",
+        "steps": [
+          "检查端口号和主机地址",
+          "防火墙可能阻止了连接——检查防火墙规则",
+          "Docker: 确保端口映射正确 (-p 8000:8000)"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nimport requests\nrequests.get('http://localhost:9999')\n\n# ✅ Fix - handle connection errors\nimport requests\ntry:\n    r = requests.get('http://localhost:8000', timeout=5)\nexcept requests.ConnectionError:\n    print('Server not running. Start the server first.')",
+    "ref": "https://docs.python-requests.org/en/latest/user/quickstart/#errors-and-exceptions"
+  },
+  {
+    "id": "py-timeout-001",
+    "title": "TimeoutError / Request Timed Out",
+    "title_zh": "超时错误 / 请求超时",
+    "patterns": [
+      "TimeoutError:",
+      "requests\\.exceptions\\.ReadTimeout",
+      "requests\\.exceptions\\.ConnectTimeout",
+      "socket\\.timeout: timed out"
+    ],
+    "solutions": [
+      {
+        "type": "config",
+        "title": "Increase timeout or add retries",
+        "steps": [
+          "The remote server is too slow or unresponsive",
+          "Increase timeout: requests.get(url, timeout=30)",
+          "Add retry logic with exponential backoff using tenacity or urllib3.Retry"
+        ],
+        "title_zh": "增加超时或添加重试",
+        "steps_zh": [
+          "远程服务器太慢或无响应",
+          "增加 timeout：requests.get(url, timeout=30)",
+          "添加 retry logic with exponential backoff using tenacity or urllib3.Retry"
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Check network and server",
+        "steps": [
+          "Check internet connectivity and DNS resolution",
+          "The server might be overloaded — try again later",
+          "If using async: check for deadlocks or unhandled await"
+        ],
+        "title_zh": "检查网络和服务器",
+        "steps_zh": [
+          "检查互联网连接和 DNS 解析",
+          "服务器可能过载——稍后再试",
+          "如果 using async：check for deadlocks or unhandled await"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "增加超时或添加重试",
+        "steps": [
+          "远程服务器太慢或无响应",
+          "增加超时时间: requests.get(url, timeout=30)",
+          "使用 tenacity 或 urllib3.Retry 添加带指数退避的重试逻辑"
+        ]
+      },
+      {
+        "title": "检查网络和服务器",
+        "steps": [
+          "检查网络连接和 DNS 解析",
+          "服务器可能过载——稍后重试",
+          "如果使用异步: 检查死锁或未处理的 await"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nrequests.get('https://slow-api.com', timeout=2)\n\n# ✅ Fix\nfrom requests.adapters import HTTPAdapter, Retry\ns = requests.Session()\nretries = Retry(total=3, backoff_factor=0.5)\ns.mount('https://', HTTPAdapter(max_retries=retries))\ns.get('https://slow-api.com', timeout=10)",
+    "ref": "https://requests.readthedocs.io/en/latest/user/advanced/#timeouts"
+  },
+  {
+    "id": "py-stop-001",
+    "title": "StopIteration / Iterator Exhausted",
+    "title_zh": "迭代器耗尽 (StopIteration)",
+    "patterns": [
+      "StopIteration",
+      "RuntimeError: generator raised StopIteration"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Handle iterator exhaustion",
+        "steps": [
+          "You called next() on an empty iterator or exhausted generator",
+          "Use a default value: next(iter, default_value)",
+          "Or wrap in try/except StopIteration",
+          "Python 3.7+: StopIteration in generators is wrapped as RuntimeError — use return instead of raise StopIteration"
+        ],
+        "title_zh": "处理迭代器耗尽",
+        "steps_zh": [
+          "在空迭代器或已耗尽的生成器上调用了 next()",
+          "使用 a default value：next(iter, default_value)",
+          "或 wrap in try/except StopIteration",
+          "Python 3.7+：生成器中的 StopIteration 会被包装为 RuntimeError——使用 return 而非 raise StopIteration"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "处理迭代器耗尽",
+        "steps": [
+          "你在空迭代器或用完的生成器上调用了 next()",
+          "使用默认值: next(iter, default_value)",
+          "或用 try/except StopIteration 包裹",
+          "Python 3.7+: 生成器中的 StopIteration 被包装为 RuntimeError——用 return 代替 raise StopIteration"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nit = iter([])\nnext(it)  # StopIteration\n\n# ✅ Fix\nit = iter([1, 2, 3])\nfor item in it:  # for-loop handles StopIteration\n    print(item)\n# Or with default\nval = next(it, 'default')",
+    "ref": "https://docs.python.org/3/library/exceptions.html#StopIteration"
+  },
+  {
+    "id": "py-type-hint-001",
+    "title": "TypeError: Not Iterable / Non-iterable Object",
+    "title_zh": "类型错误：对象不可迭代",
+    "patterns": [
+      "TypeError: '(?P<type>\\w+)' object is not iterable",
+      "TypeError: argument of type '(?P<type2>\\w+)' is not iterable"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Convert to iterable or use correctly",
+        "steps": [
+          "You used a for-loop or unpacking on a non-iterable object (e.g. int, float, None)",
+          "Check if the variable should be a list/dict but is None or a single value",
+          "Wrap in a list: for item in [obj] if obj is a single value",
+          "Or use isinstance check before iterating"
+        ],
+        "title_zh": "转换为可迭代对象或正确使用",
+        "steps_zh": [
+          "你在不可迭代的对象（如 int、float、None）上使用了 for 循环或解包",
+          "检查是否 the variable should be a list/dict but is None or a single value",
+          "如果是单个值，包裹为列表：for item in [obj]",
+          "或者使用 isinstance check before iterating"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "转换为可迭代表",
+        "steps": [
+          "你在非可迭代对象（如 int, float, None）上使用了 for 循环或解包",
+          "检查变量是应为列表/字典但却是 None 或单个值",
+          "如果是单个值包装: for item in [obj]",
+          "或在迭代前使用 isinstance 检查"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\ndata = None\nfor item in data:  # None is not iterable\n    print(item)\n\n# ✅ Fix\ndata = data or []\nfor item in data:\n    print(item)",
+    "ref": "https://docs.python.org/3/tutorial/errors.html"
+  },
+  {
+    "id": "py-fstring-001",
+    "title": "SyntaxError: F-string Expression Error",
+    "title_zh": "语法错误：f-string 表达式错误",
+    "patterns": [
+      "SyntaxError: f-string: .+ at line \\d+",
+      "f-string: unmatched '\\['",
+      "f-string: expecting '}'"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix f-string syntax",
+        "steps": [
+          "f-strings use { } for expressions — you need {{ }} to show literal { }",
+          "Backslashes inside f-string expressions are not allowed (Python <3.12)",
+          "Nested quotes can cause issues: f\"{d['key']} → use different quote: f'{d[\"key\"]}'\""
+        ],
+        "title_zh": "修复 f-string 语法",
+        "steps_zh": [
+          "f-string 使用 { } 表示表达式——需要 {{ }} 来显示字面的 { }",
+          "f-string 表达式中不允许反斜杠（Python <3.12）",
+          "嵌套引号可能导致问题：f\"{d['key']} → 使用不同的引号：f'{d[\"key\"]}'\""
+        ]
+      },
+      {
+        "type": "check",
+        "title": "Common patterns",
+        "steps": [
+          "Print literal braces: f'{{literal}}' → produces {literal}",
+          "Complex expressions: extract into a variable first",
+          "JSON-like strings: use json.dumps() instead of inline formatting"
+        ],
+        "title_zh": "常见模式",
+        "steps_zh": [
+          "打印字面括号：f'{{literal}}' → 输出 {literal}",
+          "复杂表达式：先提取到变量中",
+          "类似 JSON 的字符串：使用 json.dumps() 代替内联格式化"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正 f-string 语法",
+        "steps": [
+          "f-string 用 { } 表示表达式——要输出字面量 { } 需要用 {{ }}",
+          "Python <3.12 时 f-string 表达式内不能有反斜杠",
+          "嵌套引号问题: f\"{d['key']} → 换不同引号: f'{d[\"key\"]}'\""
+        ]
+      },
+      {
+        "title": "常见模式",
+        "steps": [
+          "输出字面量花括号: f'{{literal}}' → 输出 {literal}",
+          "复杂表达式：先提取到变量中",
+          "JSON 风格字符串：用 json.dumps() 代替内联格式化"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nf\"The dict is {d['key']}\"  # nested quotes clash\n\n# ✅ Fix\nf\"The dict is {d[\\\"key\\\"]}\"\n# or\nf'The dict is {d[\"key\"]}'",
+    "ref": "https://docs.python.org/3/reference/lexical_analysis.html#f-strings"
+  },
+  {
+    "id": "py-import-circular-001",
+    "title": "ImportError: Circular Import",
+    "title_zh": "导入错误：循环导入",
+    "patterns": [
+      "ImportError: cannot import name .+ from partially initialized module",
+      "ImportError: cannot import name .+ from '.+' \\(most likely due to a circular import\\)"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Break the circular dependency",
+        "steps": [
+          "Module A imports B, and B imports A — break the cycle",
+          "Solution 1: Move the shared code to a third file (e.g. common.py) that both import",
+          "Solution 2: Import inside the function instead of at the top of the file (lazy import)",
+          "Solution 3: Use dependency injection or interfaces to decouple"
+        ],
+        "title_zh": "打破循环依赖",
+        "steps_zh": [
+          "模块 A 导入 B，B 导入 A——打破循环",
+          "方案 1：将共享代码移到第三个文件（如 common.py），二者都导入它",
+          "方案 2：在函数内部导入而非文件顶部（延迟导入）",
+          "方案 3：使用依赖注入或接口解耦"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "打破循环依赖",
+        "steps": [
+          "模块 A 导入 B，B 又导入 A——打破循环",
+          "方案1: 将共享代码移到第三个文件（如 common.py），两者都导入它",
+          "方案2: 在函数内部导入而非文件顶部（延迟导入）",
+          "方案3: 使用依赖注入或接口解耦"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ a.py imports b, b.py imports a\n\n# ✅ Fix: lazy import\n# a.py\nclass A:\n    def method(self):\n        from b import B  # Import inside method\n        return B()",
+    "ref": "https://docs.python.org/3/faq/programming.html#what-are-the-best-practices-for-importing-modules"
+  },
+  {
+    "id": "py-encode-001",
+    "title": "UnicodeDecodeError / UnicodeEncodeError",
+    "title_zh": "Unicode 编解码错误",
+    "patterns": [
+      "UnicodeDecodeError: '(?P<codec>\\w+)' codec can't decode byte",
+      "UnicodeEncodeError: '(?P<codec2>\\w+)' codec can't encode character"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Handle encoding correctly",
+        "steps": [
+          "The file contains characters that don't match your encoding (commonly UTF-8 vs GBK/latin-1)",
+          "Use: open('file', encoding='utf-8') — specify the right encoding",
+          "If unknown, try: encoding='utf-8', errors='ignore' or errors='replace'",
+          "To detect encoding: use chardet library (pip install chardet)"
+        ],
+        "title_zh": "正确处理编码",
+        "steps_zh": [
+          "文件包含与编码不匹配的字符（常见 UTF-8 vs GBK/latin-1）",
+          "使用：open('文件', encoding='utf-8')——指定正确的编码",
+          "如果 unknown, try：encoding='utf-8', errors='ignore' or errors='replace'",
+          "检测编码：使用 chardet 库（pip install chardet）"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "正确处理编码",
+        "steps": [
+          "文件包含的字符与你使用的编码不匹配（常见: UTF-8 vs GBK/latin-1）",
+          "使用: open('file', encoding='utf-8')——指定正确的编码",
+          "如果未知，尝试: encoding='utf-8', errors='ignore' 或 errors='replace'",
+          "检测编码: 使用 chardet 库 (pip install chardet)"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nwith open('data.csv') as f:  # Default encoding may be wrong\n    text = f.read()\n\n# ✅ Fix\nwith open('data.csv', encoding='utf-8', errors='replace') as f:\n    text = f.read()",
+    "ref": "https://docs.python.org/3/howto/unicode.html"
+  },
+  {
+    "id": "py-memory-001",
+    "title": "MemoryError / Out of Memory",
+    "title_zh": "内存错误 / 内存不足",
+    "patterns": [
+      "MemoryError",
+      "numpy\\.core\\._exceptions\\._ArrayMemoryError"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Reduce memory usage",
+        "steps": [
+          "Your program tried to allocate more memory than the system has",
+          "Check for infinite loops that keep appending to lists",
+          "Use generator expressions instead of list comprehensions for large data",
+          "Process files in chunks: pd.read_csv('file.csv', chunksize=10000)",
+          "Use memory-efficient types: float32 instead of float64, int8 instead of int64"
+        ],
+        "title_zh": "减少内存占用",
+        "steps_zh": [
+          "你的程序试图分配超过系统可用内存的空间",
+          "检查是否存在不断向列表追加数据的无限循环",
+          "对大数据使用生成器表达式而非列表推导",
+          "分块处理文件：pd.read_csv('文件.csv', chunksize=10000)",
+          "使用内存友好的类型：float32 代替 float64，int8 代替 int64"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "减少内存使用",
+        "steps": [
+          "你的程序尝试分配超过系统可用内存的资源",
+          "检查是否有无限循环在不断向列表追加数据",
+          "大数据处理用生成器表达式代替列表推导式",
+          "分块读取文件: pd.read_csv('file.csv', chunksize=10000)",
+          "使用内存高效类型: float32 代替 float64, int8 代替 int64"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error (reads entire file into memory)\ndata = [line for line in open('huge.csv')]\n\n# ✅ Fix (processed in chunks)\nimport pandas as pd\nfor chunk in pd.read_csv('huge.csv', chunksize=10000):\n    process(chunk)",
+    "ref": "https://docs.python.org/3/library/exceptions.html#MemoryError"
+  },
+  {
+    "id": "py-assert-001",
+    "title": "AssertionError",
+    "title_zh": "断言错误 (AssertionError)",
+    "patterns": [
+      "AssertionError",
+      "AssertionError: (?P<msg>.+)"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Check the assertion condition",
+        "steps": [
+          "An assert statement failed — the condition evaluated to False",
+          "Check which value is wrong: print the variables in the assert expression",
+          "Remember: Python -O (optimize) mode strips all assert statements",
+          "In production code, use proper error handling (if/raise) instead of assert"
+        ],
+        "title_zh": "检查断言条件",
+        "steps_zh": [
+          "一个 assert 语句失败了——条件计算结果为 False",
+          "检查哪个值有问题：打印断言表达式中的变量",
+          "注意：Python -O（优化）模式会移除所有 assert 语句",
+          "在生产代码中，使用正确的错误处理（if/raise）代替 assert"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "检查断言条件",
+        "steps": [
+          "assert 语句失败——条件求值为 False",
+          "检查哪个值不对：打印 assert 表达式中的变量",
+          "注意: Python -O（优化模式）会移除所有 assert 语句",
+          "生产代码应使用正式的 if/raise 错误处理，而非 assert"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Fails\nassert len(data) > 0, \"Data must not be empty\"\n\n# ✅ Fix - proper error handling\nif not data:\n    raise ValueError(\"Data must not be empty\")",
+    "ref": "https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement"
+  },
+  {
+    "id": "py-flask-001",
+    "title": "Flask: 404 Not Found / Routing Error",
+    "title_zh": "Flask: 404 路由错误",
+    "patterns": [
+      "werkzeug\\.routing\\.exceptions\\.BuildError",
+      "The requested URL was not found on the server",
+      "404 Not Found: The requested URL was not found"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Fix Flask routing",
+        "steps": [
+          "The URL doesn't match any registered route",
+          "Check for trailing slashes — Flask treats /users and /users/ differently",
+          "Check if the HTTP method matches: @app.route('/api', methods=['POST'])",
+          "Use url_for() instead of hardcoding URLs to avoid BuildError"
+        ],
+        "title_zh": "修复 Flask 路由",
+        "steps_zh": [
+          "URL 未匹配到任何注册的路由",
+          "检查末尾斜杠——Flask 对 /users 和 /users/ 的处理不同",
+          "检查 HTTP 方法是否匹配：@app.route('/api', methods=['POST'])",
+          "使用 url_for() 代替硬编码 URL，避免 BuildError"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正 Flask 路由",
+        "steps": [
+          "URL 未匹配任何已注册的路由",
+          "检查尾部斜杠——Flask 将 /users 和 /users/ 视为不同",
+          "检查 HTTP 方法是否匹配: @app.route('/api', methods=['POST'])",
+          "用 url_for() 代替硬编码 URL，避免 BuildError"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Missing trailing slash redirect issues\n@app.route('/users')\ndef users():\n    return jsonify(users_list)\n\n# ✅ Fix\n@app.route('/users', methods=['GET'])\n@app.route('/users/', methods=['GET'])\ndef users():\n    return jsonify(users_list)",
+    "ref": "https://flask.palletsprojects.com/en/stable/quickstart/#routing"
+  },
+  {
+    "id": "py-flask-002",
+    "title": "Flask/Django: TemplateNotFound / Template Error",
+    "title_zh": "Flask/ Django: 模板未找到",
+    "patterns": [
+      "jinja2\\.exceptions\\.TemplateNotFound",
+      "TemplateDoesNotExist",
+      "TemplateSyntaxError:"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix template path or syntax",
+        "steps": [
+          "Flask: templates must be in a 'templates/' folder relative to your app",
+          "Django: add your app to INSTALLED_APPS and check TEMPLATES DIRS in settings.py",
+          "Jinja2 syntax errors: check for missing {% endif %}, unclosed {{ }}, or {% endfor %}"
+        ],
+        "title_zh": "修复模板路径或语法",
+        "steps_zh": [
+          "Flask：模板必须放在应用相对路径的 'templates/' 文件夹中",
+          "Django：将应用添加到 INSTALLED_APPS，并检查 settings.py 中的 TEMPLATES DIRS",
+          "Jinja2 语法错误：检查缺失的 {% endif %}、未闭合的 {{ }} 或 {% endfor %}"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正模板路径或语法",
+        "steps": [
+          "Flask: 模板必须放在 app 所在目录的 'templates/' 文件夹中",
+          "Django: 将 app 加入 INSTALLED_APPS 并检查 settings.py 中的 TEMPLATES DIRS",
+          "Jinja2 语法错误: 检查是否缺少 {% endif %}、未闭合的 {{ }} 或 {% endfor %}"
+        ]
+      }
+    ],
+    "code_fix": "# Flask project structure\n# ❌ Wrong: template in wrong location\n\n# ✅ Correct structure:\n# project/\n# ├── app.py  (Flask app)\n# └── templates/\n#     └── index.html",
+    "ref": "https://flask.palletsprojects.com/en/stable/tutorial/templates/"
+  },
+  {
+    "id": "py-django-001",
+    "title": "Django: AppRegistryNotReady / Migration Error",
+    "title_zh": "Django: App 注册未就绪 / 迁移错误",
+    "patterns": [
+      "django\\.core\\.exceptions\\.AppRegistryNotReady",
+      "django\\.db\\.migrations\\.exceptions\\.MigrationError",
+      "no such table: (?P<table>\\w+)"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix Django app init and migrations",
+        "steps": [
+          "Run: python manage.py makemigrations → python manage.py migrate",
+          "AppRegistryNotReady: don't import models at module level before Django setup() — move imports inside functions",
+          "Table missing: check if migrations are applied (python manage.py showmigrations)",
+          "In settings.py: ensure your app is in INSTALLED_APPS"
+        ],
+        "title_zh": "修复 Django 应用初始化和迁移",
+        "steps_zh": [
+          "运行：python manage.py makemigrations → python manage.py migrate",
+          "AppRegistryNotReady：不要在 Django setup() 之前的模块层级导入模型——将导入移到函数内部",
+          "表缺失：检查迁移是否已应用（python manage.py showmigrations）",
+          "在 settings.py 中：确保应用在 INSTALLED_APPS 中"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正 Django app 初始化和迁移",
+        "steps": [
+          "运行: python manage.py makemigrations → python manage.py migrate",
+          "AppRegistryNotReady: 不要在 Django setup() 之前导入 models——将导入移到函数内部",
+          "表不存在: 检查迁移是否已应用 (python manage.py showmigrations)",
+          "settings.py: 确保 app 在 INSTALLED_APPS 中"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error: importing models before Django is ready\nfrom myapp.models import MyModel\n\n# ✅ Fix: import inside function\ndef get_model():\n    from myapp.models import MyModel\n    return MyModel.objects.all()",
+    "ref": "https://docs.djangoproject.com/en/stable/topics/migrations/"
+  },
+  {
+    "id": "py-async-001",
+    "title": "RuntimeWarning: Coroutine not awaited",
+    "title_zh": "协程未被等待 (RuntimeWarning)",
+    "patterns": [
+      "RuntimeWarning: coroutine '(?P<coro>\\w+)' was never awaited",
+      "sys:1: RuntimeWarning: coroutine .+ was never awaited"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Await the coroutine",
+        "steps": [
+          "You called an async function without await — it returned a coroutine object that was never executed",
+          "Fix: result = await async_function()",
+          "Or: asyncio.run(async_function()) to run at the top level",
+          "Check if you're inside an async context when calling async functions"
+        ],
+        "title_zh": "await 协程",
+        "steps_zh": [
+          "你调用了 async 函数但未使用 await——它返回了一个从未被执行的协程对象",
+          "修复：result = await async_function()",
+          "或：asyncio.run(async_function()) 在顶层运行",
+          "在调用 async 函数时检查是否在异步上下文中"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "等待协程",
+        "steps": [
+          "你调用了 async 函数但没有 await——返回的协程对象从未执行",
+          "修正: result = await async_function()",
+          "或: asyncio.run(async_function()) 在顶层运行",
+          "检查调用 async 函数时是否处于 async 上下文中"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\nasync def fetch_data():\n    return 'data'\nresult = fetch_data()  # coroutine! Not awaited\n\n# ✅ Fix\nasync def main():\n    result = await fetch_data()\nasyncio.run(main())",
+    "ref": "https://docs.python.org/3/library/asyncio-task.html"
+  },
+  {
+    "id": "py-sqlalchemy-001",
+    "title": "SQLAlchemy: OperationalError / IntegrityError",
+    "title_zh": "SQLAlchemy: 数据库操作错误",
+    "patterns": [
+      "sqlalchemy\\.exc\\.OperationalError",
+      "sqlalchemy\\.exc\\.IntegrityError",
+      "UNIQUE constraint failed",
+      "no such column: (?P<col>\\w+)"
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Fix database issues",
+        "steps": [
+          "OperationalError: database file not found, wrong connection string, or DB server not running",
+          "IntegrityError: duplicate primary key, violated foreign key constraint, or NOT NULL violation",
+          "Column not found: check if you added a new column without running migration (alembic upgrade head)",
+          "UNIQUE constraint: use db.session.merge() or check before insert"
+        ],
+        "title_zh": "修复数据库问题",
+        "steps_zh": [
+          "OperationalError：数据库文件未找到、连接字符串错误或数据库服务器未运行",
+          "IntegrityError：重复主键、违反外键约束或 NOT NULL 违规",
+          "列未找到：检查是否添加了新列但未运行迁移（alembic upgrade head）",
+          "UNIQUE 约束：使用 db.session.merge() 或在插入前检查"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正数据库问题",
+        "steps": [
+          "OperationalError: 数据库文件未找到、连接字符串错误或 DB 服务器未运行",
+          "IntegrityError: 重复主键、违反外键约束或 NOT NULL 违规",
+          "列未找到: 检查是否添加了新列但未运行迁移 (alembic upgrade head)",
+          "UNIQUE 约束: 使用 db.session.merge() 或在插入前检查"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Duplicate key\nuser = User(id=1, name='Alice')\ndb.session.add(user)\ndb.session.commit()\n\n# ✅ Fix\nuser = User.query.get(1)\nif not user:\n    user = User(id=1, name='Alice')\n    db.session.add(user)\nelse:\n    user.name = 'Alice'\ndb.session.commit()",
+    "ref": "https://docs.sqlalchemy.org/en/20/errors.html"
+  },
+  {
+    "id": "py-numpy-001",
+    "title": "NumPy: Shape Mismatch / Broadcast Error",
+    "title_zh": "NumPy: 形状不匹配 / 广播错误",
+    "patterns": [
+      "ValueError: operands could not be broadcast together with shapes",
+      "ValueError: could not broadcast input array",
+      "ValueError: all the input arrays must have same number of dimensions"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix array shapes",
+        "steps": [
+          "The arrays you're operating on have incompatible shapes for broadcasting",
+          "Check shapes with: arr1.shape, arr2.shape",
+          "Reshape: arr.reshape(-1, 1) or np.expand_dims(arr, axis=1)",
+          "For matrix multiplication, use @ or np.dot() instead of * (element-wise)"
+        ],
+        "title_zh": "修复数组形状",
+        "steps_zh": [
+          "你操作的数组形状不兼容广播",
+          "使用 arr1.shape, arr2.shape 检查形状",
+          "重塑：arr.reshape(-1, 1) 或 np.expand_dims(arr, axis=1)",
+          "对于矩阵乘法，使用 @ 或 np.dot() 代替 *（元素乘法）"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正数组形状",
+        "steps": [
+          "你操作的数组形状不兼容广播规则",
+          "检查形状: arr1.shape, arr2.shape",
+          "重塑: arr.reshape(-1, 1) 或 np.expand_dims(arr, axis=1)",
+          "矩阵乘法用 @ 或 np.dot() 而非 *（逐元素运算）"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Broadcast error\na = np.ones((3, 4))\nb = np.ones((3,))  # shapes (3,4) vs (3,) cannot broadcast\nc = a + b\n\n# ✅ Fix\nb = b.reshape(-1, 1)  # now (3, 1) \nc = a + b  # works: (3,4) + (3,1) → (3,4)",
+    "ref": "https://numpy.org/doc/stable/user/basics.broadcasting.html"
+  },
+  {
+    "id": "py-pandas-001",
+    "title": "Pandas: KeyError / Column Not Found",
+    "title_zh": "Pandas: 列未找到 (KeyError)",
+    "patterns": [
+      "KeyError: \\[?'?(?P<col>[^\\]\\s']+)'?\\]?",
+      "KeyError: \"\\['(?P<cols>.+)'\\] not in index\""
+    ],
+    "solutions": [
+      {
+        "type": "check",
+        "title": "Fix DataFrame column access",
+        "steps": [
+          "The column name doesn't exist in the DataFrame",
+          "List all columns: print(df.columns.tolist())",
+          "Common cause: whitespace in column names — use df.columns = df.columns.str.strip()",
+          "Multi-level columns: use df[('level1', 'level2')] or df.xs()"
+        ],
+        "title_zh": "修复 DataFrame 列访问",
+        "steps_zh": [
+          "DataFrame 中不存在该列名",
+          "列出所有列：print(df.columns.tolist())",
+          "常见原因：列名中有空格——使用 df.columns = df.columns.str.strip()",
+          "多级列：使用 df[('level1', 'level2')] 或 df.xs()"
+        ]
+      }
+    ],
+    "solutions_zh": [
+      {
+        "title": "修正 DataFrame 列访问",
+        "steps": [
+          "DataFrame 中不存在该列名",
+          "列出所有列: print(df.columns.tolist())",
+          "常见原因: 列名中有空格——用 df.columns = df.columns.str.strip()",
+          "多级列: 用 df[('level1', 'level2')] 或 df.xs()"
+        ]
+      }
+    ],
+    "code_fix": "# ❌ Error\ndf = pd.DataFrame({'Name': ['Alice']})\nprint(df['name'])  # case mismatch!\n\n# ✅ Fix\nprint(df.columns.tolist())  # ['Name']\nprint(df['Name'])  # correct case",
+    "ref": "https://pandas.pydata.org/docs/user_guide/indexing.html"
+  }
+]

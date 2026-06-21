@@ -1,0 +1,211 @@
+[
+  {
+    "id": "rust-borrow-001",
+    "title": "borrow of moved value / use after move",
+    "patterns": [
+      "borrow of moved value: `([^`]+)`",
+      "use of moved value: `([^`]+)`",
+      "value (?:partially )?moved here"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix ownership/borrow issue",
+        "steps": [
+          "Rust's ownership system: a value can only have one owner at a time",
+          "{val} was moved (transferred) and you're trying to use the original variable",
+          "Solutions:",
+          "- Clone before move: let copy = {val}.clone(); then use copy",
+          "- Borrow instead: pass &{val} (reference) to keep ownership",
+          "- Use Copy/Clone trait: derive #[derive(Clone, Copy)] for simple types"
+        ],
+        "title_zh": "修复所有权/借用问题",
+        "steps_zh": [
+          "Rust 的所有权系统：一个值同时只能有一个所有者",
+          "{val} 已被移动（转移），而你试图使用原始变量",
+          "解决方案：",
+          "- 移动前克隆：let copy = {val}.clone(); 然后使用 copy",
+          "- 借用代替：传 &{val}（引用）以保留所有权",
+          "- 使用 Copy/Clone trait：对简单类型 derive #[derive(Clone, Copy)]"
+        ]
+      },
+      {
+        "type": "note",
+        "title": "Ownership rules",
+        "steps": [
+          "Each value has exactly one owner",
+          "When owner goes out of scope, value is dropped",
+          "You can borrow (&T) or mutably borrow (&mut T), but rules apply"
+        ],
+        "title_zh": "所有权规则",
+        "steps_zh": [
+          "每个值恰好有一个所有者",
+          "当所有者离开作用域，值被丢弃",
+          "你可以借用（&T）或可变借用（&mut T），但需遵守规则"
+        ]
+      }
+    ],
+    "ref": "https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html",
+    "title_zh": "借用已移动的值 / 移动后使用",
+    "solutions_zh": [
+      {
+        "title": "修正所有权/借用问题",
+        "steps": [
+          "Rust 所有权系统: 每个值同时只能有一个所有者",
+          "{val} 已被移动（转移所有权），你还在使用原始变量",
+          "解决方案:",
+          "- 移动前克隆: let copy = {val}.clone(); 然后用 copy",
+          "- 改为借用: 传递 &{val}（引用）以保留所有权",
+          "- 使用 Copy/Clone trait: derive #[derive(Clone, Copy)]"
+        ]
+      },
+      {
+        "title": "所有权规则",
+        "steps": [
+          "每个值有且仅有一个所有者",
+          "所有者超出作用域时，值被丢弃（drop）",
+          "可通过借用（&T）或可变借用（&mut T）访问，但有限制规则"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rust-mut-001",
+    "title": "cannot assign twice to immutable variable / cannot borrow as mutable",
+    "patterns": [
+      "cannot assign twice to immutable variable `([^`]+)`",
+      "cannot borrow `([^`]+)` as mutable"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Add mut keyword",
+        "steps": [
+          "Variables are immutable by default in Rust — add 'mut' to allow changes",
+          "Change: let {var} = ... → let mut {var} = ...",
+          "For references: change &x to &mut x if you need to modify through the reference"
+        ],
+        "title_zh": "添加 mut 关键字",
+        "steps_zh": [
+          "Rust 中变量默认不可变——添加 'mut' 以允许修改",
+          "修改：let {var} = ... → let mut {var} = ...",
+          "对于引用：如果需要通过引用修改，将 &x 改为 &mut x"
+        ]
+      }
+    ],
+    "title_zh": "不可变变量不能重复赋值 / 不能可变借用",
+    "solutions_zh": [
+      {
+        "title": "添加 mut 关键字",
+        "steps": [
+          "Rust 默认变量不可变——添加 'mut' 以允许修改",
+          "修改: let {var} = ... → let mut {var} = ...",
+          "引用: 如果需要通过引用修改，将 &x 改为 &mut x"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rust-match-001",
+    "title": "non-exhaustive patterns / E0382",
+    "patterns": [
+      "non-exhaustive patterns: `([^`]+)` not covered",
+      "E0\\d+: .+"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Handle all match arms",
+        "steps": [
+          "Your match expression doesn't cover all possible values of type '{type}'",
+          "Add a catch-all arm: _ => /* default */ , or use if let for partial matching",
+          "For enums: match on each variant explicitly, or use _ wildcard"
+        ],
+        "title_zh": "处理所有匹配分支",
+        "steps_zh": [
+          "你的 match 表达式未覆盖类型 '{type}' 的所有可能值",
+          "添加 a catch-all arm: _ => /* default */ , or use if let for partial matching",
+          "对枚举：明确匹配每个变体，或使用 _ 通配符"
+        ]
+      }
+    ],
+    "title_zh": "模式不完整 / match 未覆盖所有分支",
+    "solutions_zh": [
+      {
+        "title": "处理所有 match 分支",
+        "steps": [
+          "你的 match 表达式未覆盖类型 '{type}' 的所有可能值",
+          "添加兜底分支: _ => /* 默认处理 */ , 或用 if let 进行部分匹配",
+          "枚举: 显式匹配每个变体，或使用 _ 通配符"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rust-lifetime-001",
+    "title": "missing lifetime specifier / does not live long enough",
+    "patterns": [
+      "missing lifetime specifier",
+      "does not live long enough",
+      "borrowed value does not live long enough",
+      "cannot return value referencing (local|temporary) data"
+    ],
+    "solutions": [
+      {
+        "type": "fix",
+        "title": "Fix lifetime issue",
+        "steps": [
+          "A reference is being returned that points to data that will be dropped",
+          "Options:",
+          "- Return an owned type (String) instead of &str",
+          "- Add lifetime annotations: fn foo<'a>(x: &'a str) -> &'a str",
+          "- Use .to_owned() or .clone() to extend the data's lifetime"
+        ],
+        "title_zh": "修复生命周期问题",
+        "steps_zh": [
+          "返回的引用指向将被丢弃的数据",
+          "选项：",
+          "- 返回拥有类型（String）而非 &str",
+          "- 添加生命周期注解：fn foo<'a>(x: &'a str) -> &'a str",
+          "- 使用 .to_owned() 或 .clone() 延长数据生命周期"
+        ]
+      },
+      {
+        "type": "note",
+        "title": "Lifetime cheat sheet",
+        "steps": [
+          "'a = generic lifetime parameter — 'the shorter of input and output'",
+          "&'a T = reference living for at least 'a",
+          "'static = lives for entire program duration"
+        ],
+        "title_zh": "生命周期速查表",
+        "steps_zh": [
+          "'a = 泛型生命周期参数——输入输出的较短者",
+          "&'a T = 至少存活 'a 的引用",
+          "'static = 整个程序运行期间存活"
+        ]
+      }
+    ],
+    "title_zh": "生命周期问题：缺少标注 / 不够长",
+    "solutions_zh": [
+      {
+        "title": "修正生命周期问题",
+        "steps": [
+          "你返回了一个引用，但它指向即将被丢弃的数据",
+          "选项:",
+          "- 返回自有类型 (String) 而非 &str",
+          "- 添加生命周期标注: fn foo<'a>(x: &'a str) -> &'a str",
+          "- 使用 .to_owned() 或 .clone() 延长数据生命周期"
+        ]
+      },
+      {
+        "title": "生命周期速查表",
+        "steps": [
+          "'a = 通用生命周期参数——取输入和输出中较短的那个",
+          "&'a T = 至少存活 'a 的引用",
+          "'static = 整个程序执行期间都存活"
+        ]
+      }
+    ]
+  }
+]
