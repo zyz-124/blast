@@ -1,10 +1,14 @@
 {
   "name": "blast",
   "displayName": "Blast — Instant Error Fixer",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Run your code, catch errors, get fixes instantly. Offline, zero config.",
   "publisher": "blast-debug",
   "icon": "icons/blast-icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zyz-124/blast"
+  },
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -147,18 +151,27 @@
         },
         "blast.ai.provider": {
           "type": "string",
-          "default": "openai",
-          "enum": ["openai", "deepseek", "custom"],
-          "description": "AI provider (OpenAI-compatible API)"
+          "default": "deepseek",
+          "enum": ["deepseek", "siliconflow", "zhipu", "dashscope", "openrouter", "openai", "custom"],
+          "enumDescriptions": [
+            "DeepSeek (10M free tokens)",
+            "SiliconFlow (¥14 signup credit)",
+            "ZhipuAI GLM (¥18 signup credit)",
+            "Aliyun DashScope (1M free tokens/month)",
+            "OpenRouter (free models available)",
+            "OpenAI (paid)",
+            "Custom endpoint"
+          ],
+          "description": "AI provider preset — auto-fills endpoint + model"
         },
         "blast.ai.endpoint": {
           "type": "string",
-          "default": "https://api.openai.com/v1",
+          "default": "https://api.deepseek.com/v1",
           "description": "API endpoint URL"
         },
         "blast.ai.model": {
           "type": "string",
-          "default": "gpt-4o-mini",
+          "default": "deepseek-chat",
           "description": "AI model name"
         },
         "blast.ai.maxTokens": {
@@ -174,6 +187,28 @@
           "minimum": 0,
           "maximum": 2,
           "description": "AI response temperature"
+        },
+        "blast.appearance.colorTheme": {
+          "type": "string",
+          "default": "purple",
+          "enum": ["purple", "blue", "green", "orange"],
+          "description": "Primary color theme"
+        },
+        "blast.appearance.followTheme": {
+          "type": "boolean",
+          "default": true,
+          "description": "Follow VS Code light/dark theme automatically"
+        },
+        "blast.appearance.fontSize": {
+          "type": "string",
+          "default": "medium",
+          "enum": ["small", "medium", "large"],
+          "description": "Interface font size"
+        },
+        "blast.appearance.compactMode": {
+          "type": "boolean",
+          "default": false,
+          "description": "Compact layout — reduce spacing for higher density"
         }
       }
     }

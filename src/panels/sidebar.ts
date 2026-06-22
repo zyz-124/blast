@@ -52,6 +52,8 @@ function L(key: string, locale: string): string {
     // AI Settings
     aiSettings: { en: '🤖 AI Provider', zh: '🤖 AI 提供商', ja: '🤖 AIプロバイダ', ko: '🤖 AI 제공자', de: '🤖 KI-Provider', fr: '🤖 Fournisseur IA', es: '🤖 Proveedor IA', pt: '🤖 Provedor IA' },
     aiProviderLabel: { en: 'Provider', zh: '提供商', ja: 'プロバイダ', ko: '제공자', de: 'Provider', fr: 'Fournisseur', es: 'Proveedor', pt: 'Provedor' },
+    aiProviderSelect: { en: 'Select provider…', zh: '选择提供商…', ja: 'プロバイダを選択…', ko: '제공자 선택…', de: 'Provider wählen…', fr: 'Choisir…', es: 'Seleccionar…', pt: 'Selecionar…' },
+    aiCustomEndpoint: { en: 'Custom Endpoint', zh: '自定义地址', ja: 'カスタム', ko: '사용자 정의', de: 'Eigener Endp.', fr: 'Endpoint perso', es: 'Endpoint perso', pt: 'Endpoint perso' },
     aiEndpointLabel: { en: 'API Endpoint', zh: 'API 地址', ja: 'APIエンドポイント', ko: 'API 엔드포인트', de: 'API-Endpunkt', fr: 'Endpoint API', es: 'Endpoint API', pt: 'Endpoint API' },
     aiModelLabel: { en: 'Model', zh: '模型', ja: 'モデル', ko: '모델', de: 'Modell', fr: 'Modèle', es: 'Modelo', pt: 'Modelo' },
     aiKeyLabel: { en: 'API Key', zh: 'API 密钥', ja: 'APIキー', ko: 'API 키', de: 'API-Schlüssel', fr: 'Clé API', es: 'Clave API', pt: 'Chave API' },
@@ -62,6 +64,11 @@ function L(key: string, locale: string): string {
 
     // Settings
     settingsTitle: { en: 'Preferences', zh: '偏好设置', ja: '設定', ko: '환경설정', de: 'Einstellungen', fr: 'Préférences', es: 'Preferencias', pt: 'Preferências' },
+    appearanceSection: { en: '🎨 Appearance', zh: '🎨 外观', ja: '🎨 外観', ko: '🎨 디스플레이', de: '🎨 Aussehen', fr: '🎨 Apparence', es: '🎨 Apariencia', pt: '🎨 Aparência' },
+    colorThemeLabel: { en: 'Color Theme', zh: '主题色', ja: 'カラーテーマ', ko: '색상 테마', de: 'Farbschema', fr: 'Couleur', es: 'Color', pt: 'Cor' },
+    followThemeLabel: { en: 'Follow VS Code Theme', zh: '跟随 VS Code 主题', ja: 'VS Codeテーマに従う', ko: 'VS Code 테마 따르기', de: 'VS Code-Theme folgen', fr: 'Suivre le thème VS Code', es: 'Seguir tema VS Code', pt: 'Seguir tema VS Code' },
+    fontSizeLabel: { en: 'Font Size', zh: '字体大小', ja: 'フォントサイズ', ko: '글꼴 크기', de: 'Schriftgröße', fr: 'Taille police', es: 'Tamaño fuente', pt: 'Tamanho fonte' },
+    compactLabel: { en: 'Compact Mode', zh: '紧凑模式', ja: 'コンパクト', ko: '컴팩트 모드', de: 'Kompaktmodus', fr: 'Mode compact', es: 'Modo compacto', pt: 'Modo compacto' },
     langLabel: { en: 'Display Language', zh: '显示语言', ja: '表示言語', ko: '표시 언어', de: 'Sprache', fr: 'Langue', es: 'Idioma', pt: 'Idioma' },
     runnerSection: { en: 'Runner Commands', zh: '运行器命令', ja: 'ランナーコマンド', ko: '실행 명령어', de: 'Runner-Befehle', fr: 'Commandes d\'exécution', es: 'Comandos', pt: 'Comandos' },
     runnerPython: { en: 'Python', zh: 'Python', ja: 'Python', ko: 'Python', de: 'Python', fr: 'Python', es: 'Python', pt: 'Python' },
@@ -110,6 +117,30 @@ function escapeHtml(text: string): string {
 }
 
 // ───────────────────────────────────────────────────
+// Provider Presets
+// ───────────────────────────────────────────────────
+const PROVIDER_PRESETS: Record<string, { label: string; endpoint: string; model: string }> = {
+  deepseek: { label: 'DeepSeek', endpoint: 'https://api.deepseek.com/v1', model: 'deepseek-chat' },
+  siliconflow: { label: 'SiliconFlow', endpoint: 'https://api.siliconflow.cn/v1', model: 'Qwen/Qwen3-32B' },
+  zhipu: { label: 'ZhipuAI GLM', endpoint: 'https://open.bigmodel.cn/api/paas/v4', model: 'glm-4-flash' },
+  dashscope: { label: 'Aliyun DashScope', endpoint: 'https://dashscope.aliyuncs.com/compatible-mode/v1', model: 'qwen-plus' },
+  openrouter: { label: 'OpenRouter', endpoint: 'https://openrouter.ai/api/v1', model: 'google/gemini-2.5-flash-lite:free' },
+  openai: { label: 'OpenAI', endpoint: 'https://api.openai.com/v1', model: 'gpt-4o-mini' },
+  custom: { label: 'Custom', endpoint: '', model: '' },
+};
+
+const COLOR_PRESETS: Record<string, { bp: string; bp2: string }> = {
+  purple: { bp: '#a78bfa', bp2: 'rgba(167,139,250,.12)' },
+  blue: { bp: '#60a5fa', bp2: 'rgba(96,165,250,.12)' },
+  green: { bp: '#34d399', bp2: 'rgba(52,211,153,.12)' },
+  orange: { bp: '#fb923c', bp2: 'rgba(251,146,60,.12)' },
+};
+
+const FONT_SIZES: Record<string, string> = {
+  small: '11px', medium: '12.5px', large: '14px',
+};
+
+// ───────────────────────────────────────────────────
 // Sidebar Provider
 // ───────────────────────────────────────────────────
 export class BlastSidebarProvider implements vscode.WebviewViewProvider {
@@ -121,6 +152,7 @@ export class BlastSidebarProvider implements vscode.WebviewViewProvider {
   private _showConfidence = true;
   private _aiConfigured = false;
   private _aiInitConfig?: { provider: string; endpoint: string; model: string; maxTokens: number; hasKey: boolean };
+  private _appearance = { colorTheme: 'purple', followTheme: true, fontSize: 'medium', compactMode: false };
 
   // AI result state (lives inside the webview, sent via postMessage)
   private _aiAnalysis?: AiAnalysis;
@@ -139,6 +171,11 @@ export class BlastSidebarProvider implements vscode.WebviewViewProvider {
   setAiConfig(config: { provider: string; endpoint: string; model: string; maxTokens: number; hasKey: boolean }) {
     this._aiInitConfig = config;
     this._post('initConfig', config);
+  }
+
+  setAppearance(colorTheme: string, followTheme: boolean, fontSize: string, compactMode: boolean) {
+    this._appearance = { colorTheme, followTheme, fontSize, compactMode };
+    this._render();
   }
 
   // ── AI actions ──
@@ -190,6 +227,10 @@ export class BlastSidebarProvider implements vscode.WebviewViewProvider {
         case 'switchTab':
           this._activeTab = msg.tab;
           this._render();
+          break;
+        // Settings (Appearance)
+        case 'setAppearance':
+          this.onMessage?.({ type: 'setAppearance', field: msg.field, value: msg.value });
           break;
         // Settings
         case 'setLocale':
@@ -327,11 +368,15 @@ window.addEventListener('message', e => {
   // CSS
   // ═══════════════════════════════════════
   private _getCss(): string {
+    const ap = this._appearance;
+    const clr = COLOR_PRESETS[ap.colorTheme] || COLOR_PRESETS.purple;
+    const fz = FONT_SIZES[ap.fontSize] || '12.5px';
+    const compact = ap.compactMode;
     return `<style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bp:#a78bfa;
-  --bp2:rgba(167,139,250,.12);
+  --bp:${clr.bp};
+  --bp2:${clr.bp2};
   --bs:#34d399;
   --bd:#f87171;
   --bghost:var(--vscode-input-background,#2d2d2d);
@@ -340,11 +385,13 @@ window.addEventListener('message', e => {
   --tx:var(--vscode-editor-foreground,#e0e0e0);
   --txm:var(--vscode-descriptionForeground,#888);
   --bgside:var(--vscode-sideBar-background,#252526);
-  --br:8px;
+  --br:${compact ? '6px' : '8px'};
+  --gap:${compact ? '6px' : '10px'};
+  --pad:${compact ? '8px' : '14px'};
   --font:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;
   --mono:'JetBrains Mono','Fira Code',Consolas,monospace;
 }
-body{font-family:var(--font);font-size:12.5px;color:var(--tx);background:var(--bgside);line-height:1.5}
+body{font-family:var(--font);font-size:${fz};color:var(--tx);background:var(--bgside);line-height:1.5}
 
 .tab-bar{
   display:flex;background:var(--vscode-tab-inactiveBackground,transparent);
@@ -693,6 +740,25 @@ body{font-family:var(--font);font-size:12.5px;color:var(--tx);background:var(--b
 ::-webkit-scrollbar{width:6px}
 ::-webkit-scrollbar-thumb{background:var(--bdline);border-radius:3px}
 ::-webkit-scrollbar-track{background:transparent}
+${compact ? `
+/* compact mode overrides */
+.tab-btn{padding:5px 4px;font-size:10px}
+.analyze-box{padding:6px;gap:6px}
+.analyze-box textarea{padding:8px 12px;min-height:60px;max-height:140px;font-size:11px}
+.btn{padding:7px 16px;font-size:11px}
+.btn-sm{padding:4px 12px;font-size:10px}
+.card{padding:10px 12px;margin:6px 10px}
+.sol-card{padding:8px 10px;margin-bottom:5px}
+.sols-section{padding:0 8px 8px}
+.result-head{padding:10px 12px}
+.settings-section{padding:10px}
+.custom-section{padding:8px}
+.idx-item{padding:8px 10px;margin-bottom:5px}
+.ai-conf-field{padding:4px 14px}
+.ai-conf-field label{min-width:70px;font-size:10px}
+.c-form{padding:10px;margin-bottom:8px}
+.form-g{margin-bottom:6px}
+` : ''}
 </style>`;
   }
 
@@ -701,6 +767,10 @@ body{font-family:var(--font);font-size:12.5px;color:var(--tx);background:var(--b
     if (errorMsg) {
       return `<div class="hint-text">⚠️ ${escapeHtml(errorMsg)}</div>`;
     }
+    const provOptions = Object.entries(PROVIDER_PRESETS).map(([k, v]) =>
+      `<option value="${k}">${v.label}</option>`
+    ).join('');
+
     return `<div class="analyze-box">
   <div class="ai-conf-card">
     <div class="ai-conf-header">
@@ -708,12 +778,19 @@ body{font-family:var(--font);font-size:12.5px;color:var(--tx);background:var(--b
       <span class="ai-conf-title">AI Configuration</span>
     </div>
     <div class="ai-conf-field">
-      <label>Endpoint URL</label>
-      <input id="ai-endpoint" type="text" value="https://api.openai.com/v1" placeholder="https://api.openai.com/v1" />
+      <label>Provider</label>
+      <select id="ai-provider" onchange="onProvChange()" style="flex:1;padding:6px 12px;font-size:12px;font-family:var(--font);background:var(--vscode-input-background,#1a1a2e);color:var(--tx);border:1px solid var(--bdline);border-radius:6px;outline:none">
+        <option value="">${L('aiProviderSelect', loc)}</option>
+        ${provOptions}
+      </select>
     </div>
     <div class="ai-conf-field">
-      <label>Model Name</label>
-      <input id="ai-model" type="text" value="gpt-4o-mini" placeholder="gpt-4o-mini" />
+      <label>Endpoint</label>
+      <input id="ai-endpoint" type="text" value="https://api.deepseek.com/v1" placeholder="https://api.deepseek.com/v1" />
+    </div>
+    <div class="ai-conf-field">
+      <label>Model</label>
+      <input id="ai-model" type="text" value="deepseek-chat" placeholder="deepseek-chat" />
     </div>
     <div class="ai-conf-field">
       <label>API Key</label>
@@ -738,11 +815,13 @@ body{font-family:var(--font);font-size:12.5px;color:var(--tx);background:var(--b
   </div>
 </div>
 <script>
+var PRESETS=${JSON.stringify(Object.fromEntries(Object.entries(PROVIDER_PRESETS).map(([k,v])=>[k,{e:v.endpoint,m:v.model}])))};
+function onProvChange(){var p=document.getElementById('ai-provider').value;var pr=PRESETS[p];if(pr){document.getElementById('ai-endpoint').value=pr.e;document.getElementById('ai-model').value=pr.m}}
 function doA(){const t=document.getElementById('ei').value;vscode.postMessage({type:'analyze',text:t})}
 document.getElementById('ei').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.ctrlKey)doA()})
-function saveAiConf(){vscode.postMessage({type:'saveAiConfig',endpoint:document.getElementById('ai-endpoint').value,model:document.getElementById('ai-model').value,key:document.getElementById('ai-key').value,maxTokens:parseInt(document.getElementById('ai-maxTokens').value)||2000})}
-function testAi(){vscode.postMessage({type:'testAi',endpoint:document.getElementById('ai-endpoint').value,model:document.getElementById('ai-model').value,key:document.getElementById('ai-key').value,maxTokens:parseInt(document.getElementById('ai-maxTokens').value)||2000})}
-window.addEventListener('message',e=>{const m=e.data;if(m.type==='initConfig'){if(m.endpoint)document.getElementById('ai-endpoint').value=m.endpoint;if(m.model)document.getElementById('ai-model').value=m.model;if(m.maxTokens)document.getElementById('ai-maxTokens').value=m.maxTokens;if(m.hasKey)document.getElementById('ai-key').placeholder='•••••••• (saved)'}})
+function saveAiConf(){vscode.postMessage({type:'saveAiConfig',provider:document.getElementById('ai-provider').value||'custom',endpoint:document.getElementById('ai-endpoint').value,model:document.getElementById('ai-model').value,key:document.getElementById('ai-key').value,maxTokens:parseInt(document.getElementById('ai-maxTokens').value)||2000})}
+function testAi(){vscode.postMessage({type:'testAi',provider:document.getElementById('ai-provider').value,endpoint:document.getElementById('ai-endpoint').value,model:document.getElementById('ai-model').value,key:document.getElementById('ai-key').value,maxTokens:parseInt(document.getElementById('ai-maxTokens').value)||2000})}
+window.addEventListener('message',e=>{const m=e.data;if(m.type==='initConfig'){if(m.provider)document.getElementById('ai-provider').value=m.provider;if(m.endpoint)document.getElementById('ai-endpoint').value=m.endpoint;if(m.model)document.getElementById('ai-model').value=m.model;if(m.maxTokens)document.getElementById('ai-maxTokens').value=m.maxTokens;if(m.hasKey)document.getElementById('ai-key').placeholder='•••••••• (saved)'}})
 </script>`;
   }
 
@@ -773,11 +852,38 @@ window.addEventListener('message',e=>{const m=e.data;if(m.type==='initConfig'){i
       </div>`
     ).join('');
 
+    const colorOptions = (['purple','blue','green','orange'] as const).map(c =>
+      `<option value="${c}"${this._appearance.colorTheme === c ? ' selected' : ''}>${c.charAt(0).toUpperCase()+c.slice(1)}</option>`
+    ).join('');
+    const fontSizeOptions = ['small','medium','large'].map(s =>
+      `<option value="${s}"${this._appearance.fontSize === s ? ' selected' : ''}>${s.charAt(0).toUpperCase()+s.slice(1)}</option>`
+    ).join('');
+    const followChecked = this._appearance.followTheme ? ' checked' : '';
+    const compactChecked = this._appearance.compactMode ? ' checked' : '';
+
     return `<div class="settings-section">
   <h4>${L('langLabel', loc)}</h4>
   <div class="set-row">
     <label>${L('langLabel', loc)}</label>
     <select onchange="setLocale(this.value)">${langOptions}</select>
+  </div>
+
+  <h4>${L('appearanceSection', loc)}</h4>
+  <div class="set-row">
+    <label>${L('colorThemeLabel', loc)}</label>
+    <select onchange="setColorTheme(this.value)">${colorOptions}</select>
+  </div>
+  <div class="set-row">
+    <label>${L('followThemeLabel', loc)}</label>
+    <label class="toggle"><input type="checkbox"${followChecked} onchange="setFollowTheme(this.checked)" /><span class="toggle-slider"></span></label>
+  </div>
+  <div class="set-row">
+    <label>${L('fontSizeLabel', loc)}</label>
+    <select onchange="setFontSize(this.value)">${fontSizeOptions}</select>
+  </div>
+  <div class="set-row">
+    <label>${L('compactLabel', loc)}</label>
+    <label class="toggle"><input type="checkbox"${compactChecked} onchange="setCompactMode(this.checked)" /><span class="toggle-slider"></span></label>
   </div>
 
   <h4>${L('runnerSection', loc)}</h4>
@@ -800,6 +906,10 @@ window.addEventListener('message',e=>{const m=e.data;if(m.type==='initConfig'){i
 function setLocale(v){vscode.postMessage({type:'setLocale',value:v})}
 function setRunner(lang,v){vscode.postMessage({type:'setRunner',lang,value:v})}
 function setConfidence(v){vscode.postMessage({type:'setConfidence',value:v})}
+function setColorTheme(v){vscode.postMessage({type:'setAppearance',field:'colorTheme',value:v})}
+function setFollowTheme(v){vscode.postMessage({type:'setAppearance',field:'followTheme',value:v})}
+function setFontSize(v){vscode.postMessage({type:'setAppearance',field:'fontSize',value:v})}
+function setCompactMode(v){vscode.postMessage({type:'setAppearance',field:'compactMode',value:v})}
 </script>`;
   }
 

@@ -25,11 +25,17 @@ function getConfig() {
     },
     showConfidence: cfg.get<boolean>('showConfidence', true),
     ai: {
-      provider: cfg.get<string>('ai.provider', 'openai'),
-      endpoint: cfg.get<string>('ai.endpoint', 'https://api.openai.com/v1'),
-      model: cfg.get<string>('ai.model', 'gpt-4o-mini'),
+      provider: cfg.get<string>('ai.provider', 'deepseek'),
+      endpoint: cfg.get<string>('ai.endpoint', 'https://api.deepseek.com/v1'),
+      model: cfg.get<string>('ai.model', 'deepseek-chat'),
       maxTokens: cfg.get<number>('ai.maxTokens', 2000),
       temperature: cfg.get<number>('ai.temperature', 0.3),
+    },
+    appearance: {
+      colorTheme: cfg.get<string>('appearance.colorTheme', 'purple'),
+      followTheme: cfg.get<boolean>('appearance.followTheme', true),
+      fontSize: cfg.get<string>('appearance.fontSize', 'medium'),
+      compactMode: cfg.get<boolean>('appearance.compactMode', false),
     },
   };
 }
@@ -99,6 +105,12 @@ export function activate(context: vscode.ExtensionContext) {
     sidebarProvider.setRunnerConfig(cfg.runner);
     sidebarProvider.setShowConfidence(cfg.showConfidence);
     sidebarProvider.setAiConfigured(false);
+    sidebarProvider.setAppearance(
+      cfg.appearance.colorTheme,
+      cfg.appearance.followTheme,
+      cfg.appearance.fontSize,
+      cfg.appearance.compactMode,
+    );
   }
   syncConfig();
   // Push AI config to sidebar view (one-time per view creation, via resolveWebviewView)
@@ -204,6 +216,22 @@ export function activate(context: vscode.ExtensionContext) {
         const show = (msg as any).value;
         await vscode.workspace.getConfiguration('blast').update('showConfidence', show, vscode.ConfigurationTarget.Global);
         sidebarProvider.setShowConfidence(show);
+        break;
+      }
+      case 'setAppearance': {
+        const field = (msg as any).field;
+        const value = (msg as any).value;
+        if (field && value !== undefined) {
+          await vscode.workspace.getConfiguration('blast').update(`appearance.${field}`, value, vscode.ConfigurationTarget.Global);
+          // Re-read full appearance config to keep sidebar state in sync
+          const ap = getConfig().appearance;
+          sidebarProvider.setAppearance(
+            field === 'colorTheme' ? value : ap.colorTheme,
+            field === 'followTheme' ? value : ap.followTheme,
+            field === 'fontSize' ? value : ap.fontSize,
+            field === 'compactMode' ? value : ap.compactMode,
+          );
+        }
         break;
       }
       case 'addCustomEntry':
