@@ -1,6 +1,8 @@
 node_modules/
 out/
 *.vsix
+*.zip
 .vscode-test/
+.vscode/blast-custom.json
 .DS_Store
 Thumbs.db
