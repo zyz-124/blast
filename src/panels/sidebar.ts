@@ -1172,7 +1172,7 @@ function toggleIdxDetail(i){const d=document.getElementById('idx-detail-'+i);con
     }).join('');
 
     const confHtml = this._showConfidence
-      ? `<span class="badge">${Math.round(result.confidence * 100)}% ${L('matchPct', loc)}</span>`
+      ? `<span class="badge">${Math.round(Math.min(100, result.confidence))}% ${L('matchPct', loc)}</span>`
       : '';
 
     return `<!DOCTYPE html>

@@ -1,7 +1,7 @@
 {
   "name": "blast",
   "displayName": "Blast — Instant Error Fixer",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Run your code, catch errors, get fixes instantly. With immersive visual feedback.",
   "publisher": "blast-debug",
   "icon": "icons/blast-icon.png",

@@ -199,6 +199,24 @@ test('Custom KB: empty state handles gracefully', () => {
   assert(!hasTest, 'test entry should be cleaned up');
 });
 
+test('Confidence is always in 0-100 range (UI displays confidence directly, not as fraction)', () => {
+  // Regression: sidebar.ts once displayed `confidence * 100` which produced 9800% for confidence=98
+  const cases = [
+    'ModuleNotFoundError: No module named \'foo\'',
+    'TypeError: unsupported operand type(s) for +: \'int\' and \'str\'',
+    'fatal: refusing to merge unrelated histories',
+    'error: EADDRINUSE: address already in use :::3000',
+    'NullPointerException at line 42',
+  ];
+  for (const input of cases) {
+    const r = engine.analyzeText(input);
+    if (r) {
+      assert(r.confidence >= 0 && r.confidence <= 100,
+        `confidence ${r.confidence} for "${input}" is out of 0-100 range`);
+    }
+  }
+});
+
 // --- Summary ---
 console.log('\n========================================');
 console.log(`  Results: ${pass} passed / ${fail} failed / ${pass+fail} total`);
