@@ -1,8 +1,8 @@
 {
   "name": "blast",
   "displayName": "Blast — Instant Error Fixer",
-  "version": "0.6.0",
-  "description": "Run your code, catch errors, get fixes instantly. Offline, zero config.",
+  "version": "0.7.0",
+  "description": "Run your code, catch errors, get fixes instantly. With immersive visual feedback.",
   "publisher": "blast-debug",
   "icon": "icons/blast-icon.png",
   "repository": {
@@ -116,7 +116,16 @@
         "blast.locale": {
           "type": "string",
           "default": "en",
-          "enum": ["en", "zh", "ja", "ko", "de", "fr", "es", "pt"],
+          "enum": [
+            "en",
+            "zh",
+            "ja",
+            "ko",
+            "de",
+            "fr",
+            "es",
+            "pt"
+          ],
           "description": "Display language (界面语言)"
         },
         "blast.runner.python": {
@@ -152,7 +161,15 @@
         "blast.ai.provider": {
           "type": "string",
           "default": "deepseek",
-          "enum": ["deepseek", "siliconflow", "zhipu", "dashscope", "openrouter", "openai", "custom"],
+          "enum": [
+            "deepseek",
+            "siliconflow",
+            "zhipu",
+            "dashscope",
+            "openrouter",
+            "openai",
+            "custom"
+          ],
           "enumDescriptions": [
             "DeepSeek (10M free tokens)",
             "SiliconFlow (¥14 signup credit)",
@@ -191,7 +208,12 @@
         "blast.appearance.colorTheme": {
           "type": "string",
           "default": "purple",
-          "enum": ["purple", "blue", "green", "orange"],
+          "enum": [
+            "purple",
+            "blue",
+            "green",
+            "orange"
+          ],
           "description": "Primary color theme"
         },
         "blast.appearance.followTheme": {
@@ -202,7 +224,11 @@
         "blast.appearance.fontSize": {
           "type": "string",
           "default": "medium",
-          "enum": ["small", "medium", "large"],
+          "enum": [
+            "small",
+            "medium",
+            "large"
+          ],
           "description": "Interface font size"
         },
         "blast.appearance.compactMode": {
@@ -214,7 +240,6 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "test": "node test.js",

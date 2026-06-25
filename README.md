@@ -1,24 +1,53 @@
 # Blast — AI-Powered Error Diagnosis for VS Code
 
-Paste an error, get the fix. Built-in knowledge base hits 76+ rules across 5 languages — instant, offline, zero config. No match? AI deep analysis kicks in automatically.
+Paste an error, get the fix. Built-in knowledge base hits 99+ rules across 5 languages — instant, offline, zero config. No match? AI deep analysis kicks in automatically. **v0.7.0** ships a fully redesigned UI with immersive visual feedback, glassmorphism, and gradient themes.
 
 ![VS Code](https://img.shields.io/badge/VS%20Code-^1.80.0-blue)
-![Version](https://img.shields.io/badge/version-0.5.0-purple)
+![Version](https://img.shields.io/badge/version-0.7.0-purple)
 ![License](https://img.shields.io/badge/license-MIT-green)
+
+---
+
+## Why Blast?
+
+Most error helpers either give you a wall of text or require you to copy-paste to a chatbot. Blast does both — **and shows them side by side**:
+
+- **Built-in KB** (76 → 99 rules): offline, instant, with `code_fix` snippets you can copy.
+- **AI fallback** (7 providers): OpenAI, DeepSeek, 智谱 GLM, 阿里百炼 Qwen, 硅基流动, OpenRouter, or any custom OpenAI-compatible endpoint.
+- **Side-by-side display** — KB match + AI deep analysis in the same result page.
+- **Save AI results to My KB** — turn one-off AI answers into permanent offline rules.
 
 ---
 
 ## Features
 
-- **Instant KB Match** — 76+ error patterns for Python, JavaScript/TypeScript, Go, Rust, Java, Docker. Matches in milliseconds, no internet needed.
-- **AI Deep Analysis** — When the KB doesn't have an answer, Blast calls an AI (OpenAI-compatible API) to diagnose the error and suggest fixes.
-- **Dual Display** — KB match + AI analysis shown side-by-side. Best of both worlds.
-- **Code Fix Snippets** — Many rules include ready-to-paste `code_fix`.
-- **One-Click Copy** — Copy the full analysis with a single button.
-- **Custom Knowledge Base** — Save AI results to your own KB. Import/export as JSON.
-- **Multi-Language UI** — English, 中文, 日本語, 한국어, Deutsch, Français, Español, Português.
-- **Run & Fix** — Run the current file and auto-analyze the output (`Ctrl+Alt+R`).
-- **Context Menu** — Right-click any error text → "Blast: Analyze Selected Error".
+### ⚡ Core
+- **99+ KB rules** — Python, JavaScript/TypeScript, Go, Rust, Java, Docker, plus Common (git, npm, env). Bilingual EN/中文.
+- **AI deep analysis** — 7 providers, OpenAI-compatible API, multi-language responses.
+- **Dual display** — KB match + AI analysis side-by-side when KB hits; AI-only when it misses.
+- **Code Fix snippets** — ready-to-paste fixes for many rules.
+- **One-click copy** — copy the full analysis result.
+
+### 🎨 v0.7.0 Visual Overhaul
+- **Three color presets** — `bp` (purple), `bp3` (cyan), `bpGlow` (magenta-to-cyan gradient)
+- **Glassmorphism** — translucent panels with `backdrop-filter` blur
+- **Gradient backgrounds** — radial color washes in the sidebar
+- **Pulsing glow buttons** — focus-state light rings
+- **`blast-rise` entrance animation** — staggered fade-in for result cards
+- **AI loading spinner** — animated indicator while waiting for the LLM
+- **Compact mode** — denser spacing for small screens
+- **Auto theme** — light/dark/auto follow VS Code color scheme
+
+### 🌍 I18n
+8 UI languages: English, 中文, 日本語, 한국어, Deutsch, Français, Español, Português.
+
+### 🛠 Workflow
+- **Run & Fix** — `Ctrl+Alt+R` runs the current file and auto-analyzes stderr
+- **Analyze selection** — `Ctrl+Alt+B` on any selected error text
+- **Context menu** — right-click → "Blast: Analyze Selected Error"
+- **Custom KB** — save AI results to `.vscode/blast-custom.json`, import/export as JSON
+- **Full-text search** — Index tab searches all built-in + custom rules
+- **Tested** — 30/30 unit tests for the matching engine
 
 ---
 
@@ -29,7 +58,7 @@ Paste an error, get the fix. Built-in knowledge base hits 76+ rules across 5 lan
 Download the latest `.vsix` from [Releases](https://github.com/zyz-124/blast/releases), then:
 
 ```bash
-code --install-extension blast-0.5.0.vsix
+code --install-extension blast-0.7.0.vsix
 ```
 
 Reload VS Code (`Ctrl+Shift+P` → `Developer: Reload Window`).
@@ -37,7 +66,7 @@ Reload VS Code (`Ctrl+Shift+P` → `Developer: Reload Window`).
 ### Use
 
 1. Click the ⚡ Blast icon in the Activity Bar
-2. Paste an error message into the Analyze tab
+2. Paste an error message into the **Analyze** tab
 3. Click **Analyze** — or press `Ctrl+Alt+R` to run the current file and auto-analyze
 
 ---
@@ -48,20 +77,20 @@ Reload VS Code (`Ctrl+Shift+P` → `Developer: Reload Window`).
 Your Error
     │
     ▼
-┌─────────────┐    hit    ┌──────────────┐
-│  KB Engine   │─────────▶│  Instant Fix  │
-│  76+ rules   │          │  + Code Snippet│
-└─────────────┘          └──────────────┘
+┌─────────────┐    hit    ┌──────────────────────────┐
+│  KB Engine   │─────────▶│  Instant Fix + code_fix   │
+│  99+ rules   │          │  + AI deep analysis (async)│
+└─────────────┘          └──────────────────────────┘
     │ miss
     ▼
 ┌─────────────┐
 │  AI Engine   │──▶ Deep analysis + solution steps
-│  (OpenAI API)│──▶ Option: 💾 Save to My KB
+│  7 providers │──▶ Option: 💾 Save to My KB
 └─────────────┘
 ```
 
 - **KB hit** → response under 50ms, fully offline
-- **KB miss** → AI takes over, result displayed alongside "no exact match" notice
+- **AI** → 2–6s roundtrip, follows UI language
 
 ---
 
@@ -76,14 +105,18 @@ Your Error
 
 ## Configuration
 
-All settings accessible via **Blast** sidebar → **Settings** tab, or `settings.json`:
+All settings accessible via the **Blast** sidebar.
 
 ### Display
 
 | Key | Default | Description |
 |-----|---------|-------------|
-| `blast.locale` | `"en"` | UI language (`en`, `zh`, `ja`, `ko`, `de`, `fr`, `es`, `pt`) |
+| `blast.locale` | `"en"` | UI language (en/zh/ja/ko/de/fr/es/pt) |
 | `blast.showConfidence` | `true` | Show match confidence % |
+| `blast.appearance.colorPreset` | `"bp"` | `bp` / `bp3` / `bpGlow` |
+| `blast.appearance.theme` | `"auto"` | `light` / `dark` / `auto` |
+| `blast.appearance.fontSize` | `13` | px |
+| `blast.appearance.compact` | `false` | compact spacing |
 
 ### Runner Commands
 
@@ -99,9 +132,9 @@ All settings accessible via **Blast** sidebar → **Settings** tab, or `settings
 
 | Key | Default | Description |
 |-----|---------|-------------|
-| `blast.ai.provider` | `"openai"` | Provider preset (`openai`, `deepseek`, `custom`) |
-| `blast.ai.endpoint` | `"https://api.openai.com/v1"` | API endpoint (any OpenAI-compatible) |
-| `blast.ai.model` | `"gpt-4o-mini"` | Model name |
+| `blast.ai.provider` | `"deepseek"` | `openai` / `deepseek` / `zhipu` / `dashscope` / `siliconflow` / `openrouter` / `custom` |
+| `blast.ai.endpoint` | `"https://api.deepseek.com/v1"` | OpenAI-compatible endpoint |
+| `blast.ai.model` | `"deepseek-chat"` | Model name |
 | `blast.ai.maxTokens` | `2000` | Max response tokens |
 | `blast.ai.temperature` | `0.3` | Creativity (0–2) |
 
@@ -111,20 +144,14 @@ API Key is stored in VS Code's **SecretStorage** — never in plaintext config.
 
 ## AI Setup
 
-Blast works with any OpenAI-compatible API. Here are tested providers:
-
-| Provider | Endpoint | China Access |
-|----------|----------|:---:|
-| OpenAI | `https://api.openai.com/v1` | ❌ |
-| DeepSeek | `https://api.deepseek.com/v1` | ✅ |
-| OpenRouter | `https://openrouter.ai/api/v1` | ❌ |
-| Custom | Your endpoint | Depends |
-
 1. Open the **Analyze** tab
-2. Fill in **Endpoint URL**, **Model Name**, and **API Key**
-3. Click **Save** then **Test** — green "✅ Connected" means you're good
+2. Pick a **Provider** (or stick with DeepSeek default)
+3. Fill in **API Key** (and override endpoint/model if needed)
+4. Click **Save** then **Test** — green "✅ Connected" means you're good
 
-> **Tip:** If you're in China, use DeepSeek (`api.deepseek.com`) — domestic access, new users get free credits.
+**Recommended for China:** DeepSeek (`api.deepseek.com`) — domestic access, new users get free credits.
+
+**Recommended globally:** OpenAI (`api.openai.com`) or OpenRouter (free tier).
 
 ---
 
@@ -135,6 +162,7 @@ Blast saves custom entries to `.vscode/blast-custom.json` in your workspace.
 - **Save to My KB** — AI results can be saved for future instant matching
 - **Import / Export** — Share KB packs as JSON files
 - **Full-Text Search** — Index tab lets you search all built-in + custom rules
+- **Deduplication** — same `id` overrides; new entries merged
 
 ---
 
@@ -145,6 +173,7 @@ git clone https://github.com/zyz-124/blast.git
 cd blast
 npm install
 npm run compile
+npm test
 # To package:
 npm run package
 ```
@@ -155,9 +184,42 @@ npm run package
 
 ---
 
+## Changelog
+
+### v0.7.0 — Visual Overhaul
+- Three color presets (`bp`, `bp3`, `bpGlow`)
+- Glassmorphism + gradient backgrounds
+- Pulsing glow focus rings
+- `blast-rise` entrance animation
+- AI loading spinner
+- 7 AI providers (OpenAI, DeepSeek, 智谱, 阿里百炼, 硅基流动, OpenRouter, Custom)
+- 4 appearance options (color preset, theme, font size, compact mode)
+- 99+ KB rules with full 中文 translation
+
+### v0.5.0
+- AI-powered core analysis with KB as fast cache
+- AI i18n (responses follow UI language)
+- Full 中文 translation of KB titles + steps
+- UI beautification: purple gradient, rounded cards, JetBrains Mono
+
+### v0.4.0
+- Settings, Analyze, My KB, Index tabs
+- Custom KB import/export
+- Confidence display
+- Run-and-fix workflow
+
+### v0.3.0
+- Simplified UX: single button + context menu + `Ctrl+Alt+R`
+- 44 KB rules (bilingual)
+
+### v0.2.0
+- First working release: pure TypeScript, 19/19 tests passing
+
+---
+
 ## License
 
-MIT © 2024
+MIT © 2024 zyz-124
 
 ---
 
